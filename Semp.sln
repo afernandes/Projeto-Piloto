@@ -1,0 +1,63 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2036
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Semp.WebHost", "src\Semp.WebHost\Semp.WebHost.csproj", "{D8F51BA5-55CA-4624-9C75-5E541F4B4F18}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{677A0274-9889-4A69-881A-73AA94A27546}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Semp.Module.Core", "src\Modules\Semp.Module.Core\Semp.Module.Core.csproj", "{CA2FCB72-3AD6-4C5E-B00D-05242DB3A073}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Semp.Infrastructure", "src\Semp.Infrastructure\Semp.Infrastructure.csproj", "{62C095FA-0AD4-4283-87AB-0D547024076D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Semp.Module.Localization", "src\Modules\Semp.Module.Localization\Semp.Module.Localization.csproj", "{20CD66A8-0632-4867-A5FF-CEC8BC9B34C3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Semp.Module.EmailSenderSmtp", "src\Modules\Semp.Module.EmailSenderSmtp\Semp.Module.EmailSenderSmtp.csproj", "{11729A68-020C-4AFE-A719-8BBCDC5C470C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Semp.Module.Cms", "src\Modules\Semp.Module.Cms\Semp.Module.Cms.csproj", "{9A4B1923-A596-407C-8DF4-FCBCB24157E0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D8F51BA5-55CA-4624-9C75-5E541F4B4F18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8F51BA5-55CA-4624-9C75-5E541F4B4F18}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8F51BA5-55CA-4624-9C75-5E541F4B4F18}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8F51BA5-55CA-4624-9C75-5E541F4B4F18}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA2FCB72-3AD6-4C5E-B00D-05242DB3A073}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA2FCB72-3AD6-4C5E-B00D-05242DB3A073}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA2FCB72-3AD6-4C5E-B00D-05242DB3A073}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA2FCB72-3AD6-4C5E-B00D-05242DB3A073}.Release|Any CPU.Build.0 = Release|Any CPU
+		{62C095FA-0AD4-4283-87AB-0D547024076D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{62C095FA-0AD4-4283-87AB-0D547024076D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{62C095FA-0AD4-4283-87AB-0D547024076D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{62C095FA-0AD4-4283-87AB-0D547024076D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{20CD66A8-0632-4867-A5FF-CEC8BC9B34C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{20CD66A8-0632-4867-A5FF-CEC8BC9B34C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{20CD66A8-0632-4867-A5FF-CEC8BC9B34C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{20CD66A8-0632-4867-A5FF-CEC8BC9B34C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11729A68-020C-4AFE-A719-8BBCDC5C470C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11729A68-020C-4AFE-A719-8BBCDC5C470C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11729A68-020C-4AFE-A719-8BBCDC5C470C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11729A68-020C-4AFE-A719-8BBCDC5C470C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9A4B1923-A596-407C-8DF4-FCBCB24157E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A4B1923-A596-407C-8DF4-FCBCB24157E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A4B1923-A596-407C-8DF4-FCBCB24157E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A4B1923-A596-407C-8DF4-FCBCB24157E0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{CA2FCB72-3AD6-4C5E-B00D-05242DB3A073} = {677A0274-9889-4A69-881A-73AA94A27546}
+		{20CD66A8-0632-4867-A5FF-CEC8BC9B34C3} = {677A0274-9889-4A69-881A-73AA94A27546}
+		{11729A68-020C-4AFE-A719-8BBCDC5C470C} = {677A0274-9889-4A69-881A-73AA94A27546}
+		{9A4B1923-A596-407C-8DF4-FCBCB24157E0} = {677A0274-9889-4A69-881A-73AA94A27546}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B66C1079-CAC1-4619-94BE-259788AF174F}
+	EndGlobalSection
+EndGlobal
