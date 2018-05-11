@@ -107,6 +107,10 @@ namespace Semp.WebHost.Extensions
                         throw new Exception($"Cannot load {file.FullName} {tryToLoadAssemblyVersion} because {assembly.Location} {loadedAssemblyVersion} has been loaded");
                     }
                 }
+                catch(Exception ex)
+                {
+                    continue;
+                }
 
                 if (assembly.FullName.Contains(moduleFolder.Name))
                 {
