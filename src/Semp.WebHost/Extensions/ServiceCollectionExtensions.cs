@@ -190,7 +190,7 @@ namespace Semp.WebHost.Extensions
         {
             services.AddDbContextPool<SimplDbContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
-                    b => b.MigrationsAssembly("SimplCommerce.WebHost")));
+                    b => b.MigrationsAssembly("Semp.WebHost")));
             return services;
         }
 
