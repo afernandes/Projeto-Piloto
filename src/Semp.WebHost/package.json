@@ -1,5 +1,5 @@
 {
-  "name": "Semp",
+  "name": "semp",
   "version": "1.0.0",
   "description": "A simple, cross platform, modularized ecommerce system built on .NET Core",
   "private": true,
@@ -35,8 +35,6 @@
     "url": "https://github.com/afernandes/semp"
   },
   "keywords": [
-    "ecommerce",
-    "shopping-cart",
     "modular",
     "csharp",
     "netcore",

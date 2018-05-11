@@ -2,18 +2,18 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <PreserveCompilationContext>false</PreserveCompilationContext>
     <EnableDefaultContentItems>false</EnableDefaultContentItems>
-    <OutputType>Library</OutputType>
-    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <OutputType>Library</OutputType>    
   </PropertyGroup>
-
+  
   <ItemGroup>
-    <PackageReference Include="MailKit" Version="2.0.3" />
+    <ProjectReference Include="..\Semp.Module.Core\Semp.Module.Core.csproj" />    
   </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Semp.Module.Core\Semp.Module.Core.csproj" />
+    
+  <ItemGroup>        
+    <PackageReference Include="MailKit" Version="2.0.3" />
   </ItemGroup>
 
 </Project>

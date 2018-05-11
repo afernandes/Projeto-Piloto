@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Serilog;
 using Semp.Module.Core.Extensions;
+using System.IO;
 
 namespace Semp.WebHost
 {
@@ -11,12 +12,18 @@ namespace Semp.WebHost
     {
         public static void Main(string[] args)
         {
-            BuildWebHost(args).Run();
+            BuildWebHost2(args).Run();
         }
 
-        public static IWebHost BuildWebHost(string[] args) =>
-            Microsoft.AspNetCore.WebHost.CreateDefaultBuilder(args)                
+        // Changed to BuildWebHost2 to make EF don't pickup during design time
+        private static IWebHost BuildWebHost2(string[] args) =>
+            Microsoft.AspNetCore.WebHost.CreateDefaultBuilder(args)
+                .UseKestrel()
+                .UseContentRoot(Directory.GetCurrentDirectory())
+                .UseIISIntegration()
                 .UseStartup<Startup>()
+                .ConfigureAppConfiguration(SetupConfiguration)
+                .ConfigureLogging(SetupLogging)
                 .Build();
 
         private static void SetupConfiguration(WebHostBuilderContext hostingContext, IConfigurationBuilder configBuilder)

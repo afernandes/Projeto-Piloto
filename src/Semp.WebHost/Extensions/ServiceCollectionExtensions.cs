@@ -27,6 +27,7 @@ using Semp.Module.Core.Extensions;
 using Semp.Module.Core.Models;
 using Semp.Infrastructure.Web.ModelBinders;
 using Semp.Infrastructure.Web;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Semp.WebHost.Extensions
 {
@@ -40,52 +41,24 @@ namespace Semp.WebHost.Extensions
 
             foreach (var moduleFolder in moduleFolders)
             {
+                Assembly moduleMainAssembly = null;
                 var binFolder = new DirectoryInfo(Path.Combine(moduleFolder.FullName, "bin"));
-                if (!binFolder.Exists)
+                if (binFolder.Exists)
                 {
-                    continue;
+                    moduleMainAssembly = LoadModule(moduleFolder, binFolder);
                 }
 
-                foreach (var file in binFolder.GetFileSystemInfos("*.dll", SearchOption.AllDirectories))
+                if (moduleMainAssembly == null)
                 {
-                    Assembly assembly;
-                    try
-                    {
-                        assembly = AssemblyLoadContext.Default.LoadFromAssemblyPath(file.FullName);
-                    }
-                    catch (FileLoadException)
-                    {
-                        // Get loaded assembly
-                        assembly = Assembly.Load(new AssemblyName(Path.GetFileNameWithoutExtension(file.Name)));
-
-                        if (assembly == null)
-                        {
-                            throw;
-                        }
-
-                        var fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
-                        string loadedAssemblyVersion = fvi.FileVersion;
-
-                        fvi = FileVersionInfo.GetVersionInfo(file.FullName);
-                        string tryToLoadAssemblyVersion = fvi.FileVersion;
-
-                        // Or log the exception somewhere and don't add the module to list so that it will not be initialized
-                        if (tryToLoadAssemblyVersion != loadedAssemblyVersion)
-                        {
-                            throw new Exception($"Cannot load {file.FullName} {tryToLoadAssemblyVersion} because {assembly.Location} {loadedAssemblyVersion} has been loaded");
-                        }
-                    }
-
-                    if (assembly.FullName.Contains(moduleFolder.Name))
-                    {
-                        modules.Add(new ModuleInfo
-                        {
-                            Name = moduleFolder.Name,
-                            Assembly = assembly,
-                            Path = moduleFolder.FullName
-                        });
-                    }
+                    moduleMainAssembly = Assembly.Load(new AssemblyName(moduleFolder.Name));
                 }
+
+                modules.Add(new ModuleInfo
+                {
+                    Name = moduleFolder.Name,
+                    Assembly = moduleMainAssembly,
+                    Path = moduleFolder.FullName
+                });
             }
 
             foreach (var module in modules)
@@ -99,6 +72,49 @@ namespace Semp.WebHost.Extensions
 
             GlobalConfiguration.Modules = modules;
             return services;
+        }
+
+        private static Assembly LoadModule(DirectoryInfo moduleFolder, DirectoryInfo binFolder)
+        {
+            Assembly moduleMainAssembly = null;
+
+            foreach (var file in binFolder.GetFileSystemInfos("*.dll", SearchOption.AllDirectories))
+            {
+                Assembly assembly;
+                try
+                {
+                    assembly = AssemblyLoadContext.Default.LoadFromAssemblyPath(file.FullName);
+                }
+                catch (FileLoadException)
+                {
+                    // Get loaded assembly
+                    assembly = Assembly.Load(new AssemblyName(Path.GetFileNameWithoutExtension(file.Name)));
+
+                    if (assembly == null)
+                    {
+                        throw;
+                    }
+
+                    var fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
+                    string loadedAssemblyVersion = fvi.FileVersion;
+
+                    fvi = FileVersionInfo.GetVersionInfo(file.FullName);
+                    string tryToLoadAssemblyVersion = fvi.FileVersion;
+
+                    // Or log the exception somewhere and don't add the module to list so that it will not be initialized
+                    if (tryToLoadAssemblyVersion != loadedAssemblyVersion)
+                    {
+                        throw new Exception($"Cannot load {file.FullName} {tryToLoadAssemblyVersion} because {assembly.Location} {loadedAssemblyVersion} has been loaded");
+                    }
+                }
+
+                if (assembly.FullName.Contains(moduleFolder.Name))
+                {
+                    moduleMainAssembly = assembly;
+                }
+            }
+
+            return moduleMainAssembly;
         }
 
         public static IServiceCollection AddCustomizedMvc(this IServiceCollection services, IList<ModuleInfo> modules)
@@ -116,7 +132,8 @@ namespace Semp.WebHost.Extensions
                     }
                 })
                 .AddViewLocalization()
-                .AddDataAnnotationsLocalization();
+                .AddDataAnnotationsLocalization()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1); ;
 
             foreach (var module in modules)
             {
@@ -146,15 +163,15 @@ namespace Semp.WebHost.Extensions
                 .AddCookie(o => o.LoginPath = new PathString("/login"))
 
                 .AddFacebook(x =>
-            {
-                x.AppId = "1716532045292977";
-                x.AppSecret = "dfece01ae919b7b8af23f962a1f87f95";
-
-                x.Events = new OAuthEvents
                 {
-                    OnRemoteFailure = ctx => HandleRemoteLoginFailure(ctx)
-                };
-            })
+                    x.AppId = "1716532045292977";
+                    x.AppSecret = "dfece01ae919b7b8af23f962a1f87f95";
+
+                    x.Events = new OAuthEvents
+                    {
+                        OnRemoteFailure = ctx => HandleRemoteLoginFailure(ctx)
+                    };
+                })
                 .AddGoogle(x =>
                 {
                     x.ClientId = "583825788849-8g42lum4trd5g3319go0iqt6pn30gqlq.apps.googleusercontent.com";
@@ -173,7 +190,7 @@ namespace Semp.WebHost.Extensions
         {
             services.AddDbContextPool<SimplDbContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
-                    b => b.MigrationsAssembly("Semp.WebHost")));
+                    b => b.MigrationsAssembly("SimplCommerce.WebHost")));
             return services;
         }
 
@@ -188,18 +205,10 @@ namespace Semp.WebHost.Extensions
             builder.RegisterSource(new ContravariantRegistrationSource());
             builder.RegisterType<SequentialMediator>().As<IMediator>().InstancePerLifetimeScope();
             builder
-              .Register<SingleInstanceFactory>(ctx =>
+              .Register<ServiceFactory>(ctx =>
               {
                   var c = ctx.Resolve<IComponentContext>();
                   return t => { object o; return c.TryResolve(t, out o) ? o : null; };
-              })
-              .InstancePerLifetimeScope();
-
-            builder
-              .Register<MultiInstanceFactory>(ctx =>
-              {
-                  var c = ctx.Resolve<IComponentContext>();
-                  return t => (IEnumerable<object>)c.Resolve(typeof(IEnumerable<>).MakeGenericType(t));
               })
               .InstancePerLifetimeScope();
 

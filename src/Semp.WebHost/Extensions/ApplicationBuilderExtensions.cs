@@ -71,7 +71,7 @@ namespace Semp.WebHost.Extensions
         {
             var supportedCultures = new[]
             {
-                new CultureInfo("en-US"),                
+                new CultureInfo("en-US"),               
                 new CultureInfo("pt-BR")                
             };
             app.UseRequestLocalization(new RequestLocalizationOptions

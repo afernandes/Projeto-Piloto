@@ -6,13 +6,13 @@ namespace Semp.Infrastructure
 {
     public class SequentialMediator : Mediator
     {
-        public SequentialMediator(SingleInstanceFactory singleInstanceFactory, MultiInstanceFactory multiInstanceFactory) : base(singleInstanceFactory, multiInstanceFactory)
+        public SequentialMediator(ServiceFactory serviceFactory) : base(serviceFactory)
         {
         }
 
         protected async override Task PublishCore(IEnumerable<Task> allHandlers)
         {
-            foreach(var handler in allHandlers)
+            foreach (var handler in allHandlers)
             {
                 await handler;
             }
