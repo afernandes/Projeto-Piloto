@@ -6,7 +6,9 @@ using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
+using Microsoft.Extensions.Logging;
 using Semp.Infrastructure;
+using Semp.Infrastructure.ScheduledTasks;
 using Semp.Infrastructure.Web;
 using Semp.Module.Localization;
 using Semp.WebHost.Extensions;
@@ -17,11 +19,13 @@ namespace Semp.WebHost
     {
         private readonly IHostingEnvironment _hostingEnvironment;
         private readonly IConfiguration _configuration;
+        private readonly ILogger _logger;
 
-        public Startup(IConfiguration configuration, IHostingEnvironment hostingEnvironment)
+        public Startup(IConfiguration configuration, IHostingEnvironment hostingEnvironment, ILoggerFactory loggerFactory)
         {
             _configuration = configuration;
             _hostingEnvironment = hostingEnvironment;
+            _logger = loggerFactory.CreateLogger<Startup>();
         }
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
@@ -55,6 +59,13 @@ namespace Semp.WebHost
             {
                 moduleInitializer.ConfigureServices(services);
             }
+           
+            services.AddScheduler((sender, args) =>
+            {
+                _logger.LogError(string.Format("Erro no serviço ({0}) - {1} - {2}", sender.GetType().Name, DateTime.Now.ToString(), args.Exception.ToString()), sender, args);
+                System.Diagnostics.Debug.WriteLine(string.Format("Erro no serviço ({0}) - {1} - {2}", sender.GetType().Name, DateTime.Now.ToString(), args.Exception.ToString()));
+                args.SetObserved();
+            });           
 
             return services.Build(_configuration, _hostingEnvironment);
         }

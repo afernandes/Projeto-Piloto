@@ -1,21 +1,34 @@
-﻿using Semp.Infrastructure.ScheduledTasks;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using MediatR;
+using Semp.Infrastructure.ScheduledTasks;
 
 namespace Semp.Module.DadosTransacionais.Services
 {
     public class TaskTeste : IScheduledTask
     {
-        public string Schedule => "1 * * * *";
+        private readonly IMediator _mediator;
 
-        public Task ExecuteAsync(CancellationToken cancellationToken)
+        public TaskTeste(IMediator mediator)
         {
-            System.Diagnostics.Debug.Print("teste task " + DateTime.Now.ToString());
+            _mediator = mediator;
+        }
 
-            return Task.CompletedTask;
+        public string Schedule => "*/30 * * * * *";
+
+        public async Task ExecuteAsync(CancellationToken stoppingToken)
+        {
+            if (stoppingToken.IsCancellationRequested) return;
+            await Testando(stoppingToken);
+        }
+
+        private async Task Testando(CancellationToken stoppingToken)
+        {
+            await Task.Run(() =>
+            {
+                System.Diagnostics.Debug.WriteLine("teste task " + DateTime.Now.ToString());
+            });
         }
     }
 }

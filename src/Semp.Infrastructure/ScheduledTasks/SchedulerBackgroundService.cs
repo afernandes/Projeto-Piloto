@@ -21,7 +21,7 @@ namespace Semp.Infrastructure.ScheduledTasks
             {
                 _scheduledTasks.Add(new SchedulerTaskWrapper
                 {
-                    Schedule = CrontabSchedule.Parse(scheduledTask.Schedule),
+                    Schedule = CrontabSchedule.Parse(scheduledTask.Schedule, new CrontabSchedule.ParseOptions() { IncludingSeconds = true }),
                     Task = scheduledTask,
                     NextRunTime = referenceTime
                 });

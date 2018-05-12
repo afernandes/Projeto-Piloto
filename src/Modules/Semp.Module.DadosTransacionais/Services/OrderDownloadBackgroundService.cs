@@ -36,7 +36,10 @@ namespace Semp.Module.DadosTransacionais.Services
 
         private async Task CancelFailedPaymentOrders(CancellationToken stoppingToken)
         {
-            System.Diagnostics.Debug.Print("teste background " + DateTime.Now.ToString());
+            //await Task.Run(() =>
+            //{
+                System.Diagnostics.Debug.WriteLine("teste background " + DateTime.Now.ToString());
+            //});
 
             /*
             var shouldCancelFailedPaymentOrders = _orderRepository.Query().Where(x =>
