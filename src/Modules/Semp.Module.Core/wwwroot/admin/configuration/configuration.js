@@ -29,6 +29,25 @@
                 });
         };
 
+        vm.shutdown = function shutdown() {
+            vm.validationErrors = [];
+            configurationService.shutdown()
+                .then(function (result) {
+                    toastr.success('Application restarted.');
+                })
+                .catch(function (response) {
+                    var error = response.data;
+                    vm.validationErrors = [];
+                    if (error && angular.isObject(error)) {
+                        for (var key in error) {
+                            vm.validationErrors.push(error[key][0]);
+                        }
+                    } else {
+                        vm.validationErrors.push('Could not Application restarted.');
+                    }
+                });
+        }
+
         function init() {
             configurationService.getSettings().then(function (result) {
                 vm.settings = result.data;

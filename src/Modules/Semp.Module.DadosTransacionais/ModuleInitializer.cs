@@ -12,8 +12,9 @@ namespace Semp.Module.DadosTransacionais
     {
         public void ConfigureServices(IServiceCollection serviceCollection)
         {
+            serviceCollection.AddSingleton<IOrderServiceSap, OrderServiceSap>();
             //serviceCollection.AddSingleton<IHostedService, OrderDownloadBackgroundService>();
-            serviceCollection.AddSingleton<IScheduledTask, TaskTeste>();
+            serviceCollection.AddSingleton<IScheduledTask, OrderSapToLegacyBackgroundService>();            
         }
 
         public void Configure(IApplicationBuilder app, Microsoft.AspNetCore.Hosting.IHostingEnvironment env)

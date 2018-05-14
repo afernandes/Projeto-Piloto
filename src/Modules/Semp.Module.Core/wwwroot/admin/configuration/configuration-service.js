@@ -19,5 +19,9 @@
         function updateSetting(settings) {
             return $http.put('api/appsettings/', settings);
         }
+
+        function shutdown() {
+            return $http.post('api/appsettings/shutdown','')
+        }
     }
 })();

@@ -9,6 +9,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="NSAPConnector_x64" Version="1.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\Semp.Infrastructure\Semp.Infrastructure.csproj" />
     <ProjectReference Include="..\Semp.Module.Core\Semp.Module.Core.csproj" />
   </ItemGroup>

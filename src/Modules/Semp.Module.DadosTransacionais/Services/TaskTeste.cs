@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
+using Microsoft.Extensions.Configuration;
 using Semp.Infrastructure.ScheduledTasks;
 
 namespace Semp.Module.DadosTransacionais.Services
@@ -9,10 +10,12 @@ namespace Semp.Module.DadosTransacionais.Services
     public class TaskTeste : IScheduledTask
     {
         private readonly IMediator _mediator;
+        private readonly IConfiguration _config;
 
-        public TaskTeste(IMediator mediator)
+        public TaskTeste(IMediator mediator, IConfiguration config)
         {
             _mediator = mediator;
+            _config = config;
         }
 
         public string Schedule => "*/30 * * * * *";

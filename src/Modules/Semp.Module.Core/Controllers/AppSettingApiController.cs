@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Semp.Infrastructure.Data;
 using Semp.Module.Core.Models;
+using Microsoft.AspNetCore.Hosting;
 
 namespace Semp.Module.Core.Controllers
 {
@@ -16,11 +17,17 @@ namespace Semp.Module.Core.Controllers
     {
         private readonly IRepository<AppSetting> _appSettingRepository;
         private readonly IConfigurationRoot _configurationRoot;
+        private readonly IApplicationLifetime _applicationLifetime;
 
-        public AppSettingApiController(IRepository<AppSetting> appSettingRepository, IConfiguration configuration)
+
+        public AppSettingApiController(
+            IRepository<AppSetting> appSettingRepository, 
+            IConfiguration configuration,
+            IApplicationLifetime appLifetime)
         {
             _appSettingRepository = appSettingRepository;
             _configurationRoot = (IConfigurationRoot)configuration;
+            _applicationLifetime = appLifetime;
         }
 
         public async Task<IActionResult> Get()
@@ -52,5 +59,13 @@ namespace Semp.Module.Core.Controllers
 
             return BadRequest(ModelState);
         }
+
+        [Route("api/appsettings/shutdown")]
+        public IActionResult Post()
+        {
+            _applicationLifetime.StopApplication();
+            return Accepted();
+        }
+
     }
 }

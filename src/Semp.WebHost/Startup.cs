@@ -60,14 +60,17 @@ namespace Semp.WebHost
                 moduleInitializer.ConfigureServices(services);
             }
            
+            var serviceCollection =  services.Build(_configuration, _hostingEnvironment);
+
             services.AddScheduler((sender, args) =>
             {
                 _logger.LogError(string.Format("Erro no serviço ({0}) - {1} - {2}", sender.GetType().Name, DateTime.Now.ToString(), args.Exception.ToString()), sender, args);
                 System.Diagnostics.Debug.WriteLine(string.Format("Erro no serviço ({0}) - {1} - {2}", sender.GetType().Name, DateTime.Now.ToString(), args.Exception.ToString()));
                 args.SetObserved();
-            });           
+            });
 
-            return services.Build(_configuration, _hostingEnvironment);
+            return serviceCollection;
+
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
