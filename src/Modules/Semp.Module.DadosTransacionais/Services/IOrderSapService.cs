@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Semp.Module.DadosTransacionais.Services
 {
-    public interface IOrderServiceSap
+    public interface IOrderSapService
     {
         Task<Result<IEnumerable<Order>>> GetOrderFromSap(DateTime date);
     }

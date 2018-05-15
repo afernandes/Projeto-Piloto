@@ -17,11 +17,11 @@ namespace Semp.Module.DadosTransacionais.Services
         private readonly IMediator _mediator;
         private readonly IConfiguration _config;
         private readonly IOrderService _orderService;
-        private readonly IOrderServiceSap _orderServiceSap;
+        private readonly IOrderSapService _orderServiceSap;
         private readonly IRepository<Order> _orderRepository;
 
         public OrderSapToLegacyBackgroundService(IMediator mediator, IConfiguration config,
-            IOrderService orderService, IOrderServiceSap orderServiceSap,
+            IOrderService orderService, IOrderSapService orderServiceSap,
             IRepository<Order> orderRepository)
         {
             _mediator = mediator;

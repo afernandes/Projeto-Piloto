@@ -59,8 +59,6 @@ namespace Semp.WebHost
             {
                 moduleInitializer.ConfigureServices(services);
             }
-           
-            var serviceCollection =  services.Build(_configuration, _hostingEnvironment);
 
             services.AddScheduler((sender, args) =>
             {
@@ -69,8 +67,7 @@ namespace Semp.WebHost
                 args.SetObserved();
             });
 
-            return serviceCollection;
-
+            return  services.Build(_configuration, _hostingEnvironment);
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

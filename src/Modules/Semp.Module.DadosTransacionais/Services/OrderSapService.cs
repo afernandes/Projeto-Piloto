@@ -12,9 +12,9 @@ using System.Threading.Tasks;
 
 namespace Semp.Module.DadosTransacionais.Services
 {
-    public class OrderServiceSap : IOrderServiceSap
+    public class OrderSapService : IOrderSapService
     {
-        public OrderServiceSap()
+        public OrderSapService()
         {
         }
 
