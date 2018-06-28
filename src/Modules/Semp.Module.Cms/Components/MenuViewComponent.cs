@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Semp.Infrastructure.Data;
+using Semp.Infrastructure.Web;
 using Semp.Module.Cms.Models;
 using Semp.Module.Cms.ViewModels;
 
@@ -36,7 +37,7 @@ namespace Semp.Module.Cms.Components
                 menuItemVms.Add(menuItemVm);
             }
 
-            return View("/Modules/Semp.Module.Cms/Views/Components/Menu.cshtml", menuItemVms);
+            return View(this.GetViewPath(), menuItemVms);
         }
         */
 
@@ -56,7 +57,7 @@ namespace Semp.Module.Cms.Components
                 menuItemVms.Add(menuItemVm);
             }
 
-            return View("/Modules/Semp.Module.Cms/Views/Components/Menu.cshtml", menuItemVms);
+            return View(this.GetViewPath(), menuItemVms);
         }
 
         private MenuItemVm Map(MenuItem menuItem)

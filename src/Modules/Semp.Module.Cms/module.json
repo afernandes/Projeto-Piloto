@@ -1,5 +1,6 @@
 {
   "name": "cms",
   "fullName": "Semp.Module.Cms",
+  "isBundledWithHost": true,
   "version": "1.0.0"
 }

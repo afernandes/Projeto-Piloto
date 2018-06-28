@@ -8,7 +8,10 @@ var gulp = require('gulp'),
     uglify = require("gulp-uglify"),
     ignore = require('gulp-ignore'),
     glob = require("glob"),
-    rimraf = require("rimraf");
+    rimraf = require("rimraf"),
+    argv = require('yargs').argv;
+
+var buildConfigurationName = argv.configurationName || 'Debug';
 
 var paths = {
     host: {
@@ -20,7 +23,7 @@ var paths = {
     },
     dev: {
         modules: "../Modules/",
-        moduleBin: "/bin/Debug/netcoreapp2.1/"
+        moduleBin: "/bin/" + buildConfigurationName +"/netcoreapp2.1/"
     }
 };
 
@@ -83,6 +86,7 @@ gulp.task('clean-module', function () {
 
 gulp.task('copy-static', function () {
     modules.forEach(function (module) {
+        console.log('copying static contents ' + paths.dev.modules + module.fullName);
         gulp.src([paths.dev.modules + module.fullName + '/Views/**/*.*',
         paths.dev.modules + module.fullName + '/module.json'], { base: module.fullName })
             .pipe(gulp.dest(paths.host.modules + module.fullName));
@@ -98,8 +102,11 @@ gulp.task('copy-modules', ['clean-module'], function () {
     gulp.start(['copy-static']);
 
     modules.forEach(function (module) {
+        if (!module.isBundledWithHost) {
+            console.log('copying ' + paths.dev.modules + module.fullName + paths.dev.moduleBin);
         gulp.src(paths.dev.modules + module.fullName + paths.dev.moduleBin + '**/*.*')
             .pipe(gulp.dest(paths.host.modules + module.fullName + paths.host.moduleBin));
+        }
     });
 });
 

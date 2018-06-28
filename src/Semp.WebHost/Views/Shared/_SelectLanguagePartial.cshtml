@@ -1,38 +1,30 @@
-﻿@using System.Threading.Tasks
-@using Microsoft.AspNetCore.Localization
+﻿@using Microsoft.AspNetCore.Localization
+@using Semp.Infrastructure
+
 @inject IViewLocalizer Localizer
+
 @{
     var requestCulture = Context.Features.Get<IRequestCultureFeature>();
+    var availableCultures = GlobalConfiguration.SimpleCultures;
+}
 
-    var availableCultures = new List<SelectListItem>
+@if (availableCultures.Count() > 1)
 {
-new SelectListItem
-{
-    Value = "en-US",
-    Text = "English"
-},
-new SelectListItem
-{
-    Value = "pt-BR",
-    Text = "Portuguese"
-}
-};
-}
 <li class="nav-item dropdown">
     <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
-        @Localizer["Language"] (@requestCulture.RequestCulture.UICulture.Name)
+        Language (@requestCulture.RequestCulture.UICulture.Name)
         <span class="caret"></span>
     </a>
     <ul class="dropdown-menu lang-selector">
         @foreach (var lang in availableCultures)
         {
-            if (lang.Value == requestCulture.RequestCulture.UICulture.Name)
+            if (lang.Id == requestCulture.RequestCulture.UICulture.Name)
             {
-                <li class="dropdown-item"><a href="#" data-value="@lang.Value">@Localizer[lang.Text] <span class="glyphicon glyphicon-ok" aria-hidden="true"></span></a></li>
+                <li class="dropdown-item"><a href="#" data-value="@lang.Id">@lang.Name <span class="glyphicon glyphicon-ok" aria-hidden="true"></span></a></li>
             }
             else
             {
-                <li class="dropdown-item"><a href="#" data-value="@lang.Value">@Localizer[lang.Text]</a></li>
+                <li class="dropdown-item"><a href="#" data-value="@lang.Id">@lang.Name</a></li>
             }
         }
     </ul>
@@ -41,3 +33,4 @@ new SelectListItem
         <input type="hidden" name="culture" value="@requestCulture.RequestCulture.UICulture.Name" />
     </form>
 </li>
+}

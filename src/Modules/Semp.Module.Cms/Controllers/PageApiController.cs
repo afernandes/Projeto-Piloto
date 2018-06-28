@@ -8,6 +8,7 @@ using Semp.Infrastructure.Data;
 using Semp.Module.Cms.Models;
 using Semp.Module.Cms.Services;
 using Semp.Module.Cms.ViewModels;
+using Semp.Module.Core.Extensions;
 
 namespace Semp.Module.Cms.Controllers
 {
@@ -17,11 +18,13 @@ namespace Semp.Module.Cms.Controllers
     {
         private readonly IRepository<Page> _pageRepository;
         private readonly IPageService _pageService;
+        private readonly IWorkContext _workContext;
 
-        public PageApiController(IRepository<Page> pageRepository, IPageService pageService)
+        public PageApiController(IRepository<Page> pageRepository, IPageService pageService, IWorkContext workContext)
         {
             _pageRepository = pageRepository;
             _pageService = pageService;
+            _workContext = workContext;
         }
 
         [HttpGet]
@@ -66,6 +69,7 @@ namespace Semp.Module.Cms.Controllers
         {
             if (ModelState.IsValid)
             {
+                var currentUser = await _workContext.GetCurrentUser();
                 var page = new Page
                 {
                     Name = model.Name,
@@ -74,7 +78,8 @@ namespace Semp.Module.Cms.Controllers
                     MetaKeywords = model.MetaKeywords,
                     MetaDescription = model.MetaDescription,
                     Body = model.Body,
-                    IsPublished = model.IsPublished
+                    IsPublished = model.IsPublished,
+                    CreatedBy = currentUser
                 };
 
                 await _pageService.Create(page);
@@ -94,6 +99,8 @@ namespace Semp.Module.Cms.Controllers
                     return NotFound();
                 }
 
+                var currentUser = await _workContext.GetCurrentUser();
+
                 page.Name = model.Name;
                 page.Slug = model.Slug;
                 page.MetaTitle = model.MetaTitle;
@@ -102,6 +109,7 @@ namespace Semp.Module.Cms.Controllers
                 page.Body = model.Body;
                 page.IsPublished = model.IsPublished;
                 page.UpdatedOn = DateTimeOffset.Now;
+                page.UpdatedBy = currentUser;
 
                 await _pageService.Update(page);
                 return Accepted();

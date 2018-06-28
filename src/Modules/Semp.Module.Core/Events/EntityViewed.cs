@@ -6,6 +6,6 @@ namespace Semp.Module.Core.Events
     {
         public long EntityId { get; set; }
 
-        public long EntityTypeId { get; set; }
+        public string EntityTypeId { get; set; }
     }
 }

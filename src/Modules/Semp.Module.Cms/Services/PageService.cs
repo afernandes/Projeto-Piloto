@@ -7,7 +7,7 @@ namespace Semp.Module.Cms.Services
 {
     public class PageService : IPageService
     {
-        public const long PageEntityTypeId = 4;
+        public const string PageEntityTypeId = "Page";
 
         private readonly IRepository<Page> _pageRepository;
         private readonly IEntityService _entityService;

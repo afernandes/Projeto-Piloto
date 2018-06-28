@@ -28,6 +28,10 @@ using Semp.Module.Core.Models;
 using Semp.Infrastructure.Web.ModelBinders;
 using Semp.Infrastructure.Web;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using System.Net;
 
 namespace Semp.WebHost.Extensions
 {
@@ -147,7 +151,7 @@ namespace Semp.WebHost.Extensions
             return services;
         }
 
-        public static IServiceCollection AddCustomizedIdentity(this IServiceCollection services)
+        public static IServiceCollection AddCustomizedIdentity(this IServiceCollection services, IConfiguration configuration)
         {
             services
                 .AddIdentity<User, Role>(options =>
@@ -164,8 +168,7 @@ namespace Semp.WebHost.Extensions
                 .AddDefaultTokenProviders();
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(o => o.LoginPath = new PathString("/login"))
-
+                .AddCookie()
                 .AddFacebook(x =>
                 {
                     x.AppId = "1716532045292977";
@@ -184,9 +187,45 @@ namespace Semp.WebHost.Extensions
                     {
                         OnRemoteFailure = ctx => HandleRemoteLoginFailure(ctx)
                     };
+                })
+                .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = false,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = configuration["Jwt:Issuer"],
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]))
+                    };
                 });
+            services.ConfigureApplicationCookie(x =>
+            {
+                x.LoginPath = new PathString("/login");
+                x.Events.OnRedirectToLogin = context =>
+                {
+                    if (context.Request.Path.StartsWithSegments("/api") && context.Response.StatusCode == (int)HttpStatusCode.OK)
+                    {
+                        context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                        return Task.CompletedTask;
+                    }
 
-            services.ConfigureApplicationCookie(x => x.LoginPath = new PathString("/login"));
+                    context.Response.Redirect(context.RedirectUri);
+                    return Task.CompletedTask;
+                };
+                x.Events.OnRedirectToAccessDenied = context =>
+                {
+                    if (context.Request.Path.StartsWithSegments("/api") && context.Response.StatusCode == (int)HttpStatusCode.OK)
+                    {
+                        context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
+                        return Task.CompletedTask;
+                    }
+
+                    context.Response.Redirect(context.RedirectUri);
+                    return Task.CompletedTask;
+                };
+            });
             return services;
         }
 
@@ -233,7 +272,7 @@ namespace Semp.WebHost.Extensions
 
         private static Task HandleRemoteLoginFailure(RemoteFailureContext ctx)
         {
-            ctx.Response.Redirect("/Login");
+            ctx.Response.Redirect("/login");
             ctx.HandleResponse();
             return Task.CompletedTask;
         }

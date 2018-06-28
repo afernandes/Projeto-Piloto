@@ -35,8 +35,10 @@ namespace Semp.Module.Core.Models
 
         public long? DefaultBillingAddressId { get; set; }
 
+        public string RefreshTokenHash { get; set; }
+
         public IList<UserRole> Roles { get; set; } = new List<UserRole>();
 
-        //public IList<UserCustomerGroup> CustomerGroups { get; set; } = new List<UserCustomerGroup>();
+        //public IList<CustomerGroupUser> CustomerGroups { get; set; } = new List<CustomerGroupUser>();
     }
 }

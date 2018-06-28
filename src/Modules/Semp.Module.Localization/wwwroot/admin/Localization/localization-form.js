@@ -10,7 +10,7 @@
         vm.translate = translateService;
         vm.resources = [];
         vm.cultures = [];
-        vm.selectedCultureId = 1;
+        vm.selectedCultureId = 'pt-BR';
 
         vm.changeCulture = function changeCulture()
         {

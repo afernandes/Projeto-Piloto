@@ -15,13 +15,13 @@ namespace Semp.Module.Core.Controllers
     [Route("api/appsettings")]
     public class AppSettingApiController : Controller
     {
-        private readonly IRepository<AppSetting> _appSettingRepository;
+        private readonly IRepositoryWithTypedId<AppSetting, string> _appSettingRepository;
         private readonly IConfigurationRoot _configurationRoot;
         private readonly IApplicationLifetime _applicationLifetime;
 
 
         public AppSettingApiController(
-            IRepository<AppSetting> appSettingRepository, 
+            IRepositoryWithTypedId<AppSetting, string> appSettingRepository, 
             IConfiguration configuration,
             IApplicationLifetime appLifetime)
         {
@@ -44,7 +44,7 @@ namespace Semp.Module.Core.Controllers
                 var settings = await _appSettingRepository.Query().Where(x => x.IsVisibleInCommonSettingPage).ToListAsync();
                 foreach(var item in settings)
                 {
-                    var vm = model.FirstOrDefault(x => x.Key == item.Key);
+                    var vm = model.FirstOrDefault(x => x.Id == item.Id);
                     if (vm != null)
                     {
                         item.Value = vm.Value;

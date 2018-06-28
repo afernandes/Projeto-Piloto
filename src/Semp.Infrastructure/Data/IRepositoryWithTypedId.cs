@@ -5,7 +5,7 @@ using Semp.Infrastructure.Models;
 
 namespace Semp.Infrastructure.Data
 {
-    public interface IRepositoryWithTypedId<T, in TId> where T : IEntityWithTypedId<TId>
+    public interface IRepositoryWithTypedId<T, TId> where T : IEntityWithTypedId<TId>
     {
         IQueryable<T> Query();
 

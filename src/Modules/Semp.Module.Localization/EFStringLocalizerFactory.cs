@@ -33,7 +33,7 @@ namespace Semp.Module.Localization
         {
             _resourceStrings = _resourceRepository.Query().Select(x => new ResourceString
             {
-                Culture = x.Culture.Name,
+                Culture = x.CultureId,
                 Key = x.Key,
                 Value = x.Value
             }).ToList();
