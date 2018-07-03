@@ -5,6 +5,7 @@
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <EnableDefaultContentItems>false</EnableDefaultContentItems>
     <MvcRazorCompileOnPublish>false</MvcRazorCompileOnPublish>
+    <TypeScriptToolsVersion>2.8</TypeScriptToolsVersion>
   </PropertyGroup>
 
   <ItemGroup>
