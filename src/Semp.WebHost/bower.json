@@ -3,7 +3,6 @@
   "private": true,
   "dependencies": {
     "components-font-awesome": "4.5.0",
-    "jquery": "2.2.3",
     "jquery-validation": "1.15.0",
     "jquery-validation-unobtrusive": "3.2.4",
     "nouislider": "8.5.1",
@@ -24,10 +23,13 @@
     "bootstrap": "v4.1.1",
     "bootstrap-ui-datetime-picker": "2.6.1",
     "angular-i18n": "v1.6.9",
-    "bootstrap-star-rating": "v4.0.2"
+    "bootstrap-star-rating": "4.0.3",
+    "jquery": "3.2.1"
   },
   "resolutions": {
     "angular": "1.6.3",
-    "bootstrap": "v4.1.1"
+    "bootstrap": ">= 3.0.0",
+    "jquery": "3.2.1",
+    "bootstrap-star-rating": "4.0.3"
   }
 }

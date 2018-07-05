@@ -15,7 +15,9 @@
     "gulp-min:css": "gulp min:css",
     "gulp-min": "gulp min"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@ng-bootstrap/ng-bootstrap": "^2.2.0"
+  },
   "devDependencies": {
     "bower": "^1.8.4",
     "glob": "^7.1.2",

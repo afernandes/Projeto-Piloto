@@ -1,14 +1,42 @@
-﻿<div class="page-header">
-    <div class="row">
-        <div class="col-md-8">
-            <h2>{{::vm.translate.get('Installed themes')}}</h2>
-        </div>
-        <div class="col-md-4 text-right">
-            <a ui-sref="online-themes" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> {{::vm.translate.get('View Online Themes')}}</a>
+﻿<div class="d-flex align-items-center p-3 my-3 text-white-50 bg-secondary rounded box-shadow">
+    <span class="mr-3 icon ion-md-cloud-download h1"></span>
+    <div class="lh-100 flex-grow-1">
+        <h6 class="mb-0 text-white lh-100">{{::vm.translate.get('Installed themes')}}</h6>
+        <small>themes for the frontend</small>
+    </div>
+    <a ui-sref="online-themes" class="btn btn-primary"><i class="icon ion-md-cloud-outline"></i> {{::vm.translate.get('View Online Themes')}}</a>
+</div>
+
+<div class="row">
+    <div class="col-md-4" ng-repeat="theme in vm.themes">
+        <div class="card mb-4 box-shadow" >
+            <img class="card-img-top" alt="{{theme.displayName}}" ng-src="{{theme.thumbnailUrl}}">
+            <div class="card-body">
+                <h5 class="card-title">{{theme.displayName}}</h5>
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="btn-group" ng-show="theme.isCurrent">
+                        <button type="button" class="btn btn-sm btn-outline-secondary" disabled="disabled">Current theme</button>
+                        <button ng-if="theme.name !== 'Generic'" class="btn btn-outline-secondary" role="button" ng-click="vm.downloadTheme(theme)">Download</button>
+                    </div>
+
+                    <div class="btn-group" ng-hide="theme.isCurrent">
+                        <button class="btn btn-sm btn-outline-secondary" role="button" ng-click="vm.useTheme(theme)">Use</button>
+                        <button ng-hide="theme.name === vm.previewingTheme" class="btn btn-sm btn-outline-primary" role="button" ng-click="vm.previewTheme(theme)">Preview</button>
+                        <button ng-show="theme.name === vm.previewingTheme" class="btn btn-sm btn-outline-primary" role="button" ng-click="vm.cancelPreviewTheme(theme)">Cancel Preview</button>
+                        <button ng-if="theme.name !== 'Generic'" class="btn btn-sm btn-outline-secondary" role="button" ng-click="vm.downloadTheme(theme)">Download</button>
+                        <button ng-if="theme.name !== 'Generic'" class="btn btn-sm btn-outline-danger" role="button" ng-click="vm.deleteTheme(theme)">Delete</button>
+
+                    </div>
+                    <!--
+                    <small class="text-muted">9 mins</small>
+                    -->
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
+<!--
 <div class="row">
     <div ng-repeat="theme in vm.themes" class="col-xs-6 col-md-4">
         <div class="thumbnail">
@@ -30,7 +58,7 @@
                 </p>
 
             </div>
-         </div>
+        </div>
     </div>
 </div>
-	
+-->

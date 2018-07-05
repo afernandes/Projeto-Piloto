@@ -1,14 +1,25 @@
-﻿<div class="panel panel-default">
-    <div class="panel-heading">
-        <h2>{{::vm.translate.get('Manage Translations')}}</h2>
-        <p>Note that the updated translations only be affected after the application is restarted</p>
+﻿<!--
+<div class="d-flex align-items-center p-3 my-3 text-white-50 bg-primary rounded box-shadow">
+    <span class="mr-3 icon ion-md-globe h1"></span>
+    <div class="lh-100">
+        <h6 class="mb-0 text-white lh-100">{{::vm.translate.get('Manage Translations')}}</h6>
+        <small>Note that the updated translations only be affected after the application is restarted</small>
     </div>
-    <div class="panel-body">
+</div>
+-->
+
+<div class="card">
+    <div class="card-header d-flex align-items-center">
+        <span style="" class="mr-3 icon ion-md-globe h1"></span>
+        <div class="lh-100">
+            <h4 class="mb-0 lh-100 ng-binding">{{::vm.translate.get('Manage Translations')}}</h4>
+            <small class="text-muted">Note that the updated translations only be affected after the application is restarted</small>
+        </div>
+    </div>
+    <div class="card-body">
         <form name="cultureSelection" class="form-inline">
-            <div class="form-group">
-                <label>{{::vm.translate.get('Select culture')}}</label>
-                <select class="form-control" ng-model="vm.selectedCultureId" ng-change="vm.changeCulture()" ng-options="culture.id as culture.name for culture in vm.cultures"></select>
-            </div>            
+            <label class="mr-sm-3">{{::vm.translate.get('Select culture')}}</label>
+            <select class="form-control" ng-model="vm.selectedCultureId" ng-change="vm.changeCulture()" ng-options="culture.id as culture.name for culture in vm.cultures"></select>
         </form>
         <form name="localizationForm" class="form-horizontal">
             <div class="col-sm-offset-4 bg-danger" ng-show="vm.validationErrors">
@@ -17,19 +28,23 @@
                 </ul>
             </div>
             <hr />
-            <div class="form-group" ng-repeat="item in vm.resources">
-                <label class="col-sm-4 control-label">{{item.key}}</label>
+            <div class="form-group row" ng-repeat="item in vm.resources">
+                <label class="col-sm-4 col-form-label">{{item.key}}</label>
                 <div class="col-sm-8 has-feedback">
-                    <input name="name" ng-model="item.value" class="form-control" aria-describedby="inputSuccess2Status" />
-                    <span ng-hide="!item.isTranslated" class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-sm-offset-4 col-sm-8">
-                    <button class="btn btn-primary" ng-click="vm.save()"><span class="glyphicon glyphicon-ok"></span> {{::vm.translate.get('Save')}}</button>
-                    <button ui-sref="dashboard" class="btn btn-default">{{::vm.translate.get('Cancel')}}</button>
+                    <div class="input-group">
+                        <input name="name-{{item.key}}" ng-model="item.value" class="form-control" aria-describedby="inputSuccess2Status" />
+
+                        <div class="input-group-append">
+                            <i for="name-{{item.key}}" ng-hide="!item.isTranslated" class="input-group-text icon ion-md-checkmark" aria-hidden="true"></i>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </form>
+    </div>
+    <div class="card-footer">
+        <button class="btn btn-primary mr-sm-3" ng-click="vm.save()"><i class="icon ion-md-checkmark"></i> {{::vm.translate.get('Save')}}</button>
+        <button ui-sref="dashboard" class="btn btn-default">{{::vm.translate.get('Cancel')}}</button>
     </div>
 </div>

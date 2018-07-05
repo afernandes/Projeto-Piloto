@@ -7,7 +7,7 @@
 @inject IWorkContext WorkContext
 @inject IConfiguration Config
 
-@{ 
+@{
     Layout = null;
 }
 
@@ -19,68 +19,216 @@
     <title>Admin - Semp</title>
     <link simpl-append-version="true" rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.css" />
     <link simpl-append-version="true" rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.css" />
+    <!--
     <link simpl-append-version="true" rel="stylesheet" href="~/lib/angular-material/angular-material.css" />
+    -->
     <link simpl-append-version="true" rel="stylesheet" href="~/lib/angular-bootstrap/ui-bootstrap-csp.css" />
     <link simpl-append-version="true" rel="stylesheet" href="~/lib/toastr/toastr.css" />
     <link simpl-append-version="true" rel="stylesheet" href="~/lib/summernote/summernote.css" />
     <link simpl-append-version="true" rel="stylesheet" href="~/lib/angular-ui-tree/angular-ui-tree.min.css" />
     <link simpl-append-version="true" rel="stylesheet" href="~/lib/angular-bootstrap-colorpicker/css/colorpicker.min.css" />
     <link simpl-append-version="true" rel="stylesheet" href="~/modules/core/admin/admin-core.css" />
-    <script>
+
+    <link href="https://unpkg.com/ionicons@4.2.4/dist/css/ionicons.min.css" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+            <a class="navbar-brand" href="~/Admin">@Localizer["Administration"]</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    @if (User.IsInRole("admin"))
+                    {
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" id="navbarDropdownSite" href="javascript:void(0)" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                @Localizer["Site"]
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownSite">
+                                <a class="dropdown-item" ui-sref="users">@Localizer["Users"]</a>
+                                @*
+                                <a class="dropdown-item" ui-sref="vendors">@Localizer["Vendors"]</a>
+                                <a class="dropdown-item" ui-sref="customergroups">@Localizer["Customer Groups"]</a>
+                                <a class="dropdown-item" ui-sref="reviews">@Localizer["Reviews"]</a>
+                                <a class="dropdown-item" ui-sref="contact-area">@Localizer["Manage Contact Area"]</a>
+                                <a class="dropdown-item" ui-sref="contact">@Localizer["Manage Contact"]</a>
+                                *@
+                            </div>
+                        </li>
+                    }
+
+                    @*
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" id="navbarDropdownCatalog" href="javascript:void(0)" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            @Localizer["Catalog"]
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownCatalog">
+                            <a class="dropdown-item" ui-sref="product">@Localizer["Products"]</a>
+                            <a class="dropdown-item" ui-sref="product-prices">@Localizer["Product Prices"]</a>
+                            @if (User.IsInRole("admin"))
+                            {
+                                <a class="dropdown-item" ui-sref="category">@Localizer["Categories"]</a>
+                                <a class="dropdown-item" ui-sref="brand">@Localizer["Brands"]</a>
+                                <a class="dropdown-item" ui-sref="product-option">@Localizer["Product Options"]</a>
+                                <a class="dropdown-item" ui-sref="product-attribute-group">@Localizer["Product Attribute Groups"]</a>
+                                <a class="dropdown-item" ui-sref="product-attribute">@Localizer["Product Attributes"]</a>
+                                <a class="dropdown-item" ui-sref="product-template">@Localizer["Product Templates"]</a>
+                            }
+                        </div>
+                    </li>
+                    *@
+
+                    @*
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" id="navbarDropdownSales" href="javascript:void(0)" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            @Localizer["Sales"]
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownSales">
+                            <a class="dropdown-item" ui-sref="order">@Localizer["Orders"]</a>
+                            <a class="dropdown-item" ui-sref="stocks">@Localizer["Stocks"]</a>
+                            <a class="dropdown-item" ui-sref="shipments">@Localizer["Shipments"]</a>
+                        </div>
+                    </li>
+                    *@
+
+                    @if (User.IsInRole("admin"))
+                    {
+                        @*
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" id="navbarDropdownPromotions" href="javascript:void(0)" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                @Localizer["Promotions"]
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownPromotions">
+                                <a class="dropdown-item" ui-sref="cart-rules">@Localizer["Cart Price Rules"]</a>
+                                <a class="dropdown-item" ui-sref="cart-rule-usages">@Localizer["Cart Price Rule Usages"]</a>
+                            </div>
+                        </li>
+                        *@
+                        
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" id="navbarDropdownContent" href="javascript:void(0)" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                @Localizer["Content"]
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownContent">
+                                <a class="dropdown-item" ui-sref="page">@Localizer["Pages"]</a>
+                                <a class="dropdown-item" ui-sref="menus">@Localizer["Menus"]</a>
+                                <a class="dropdown-item" ui-sref="widget">@Localizer["Widgets"]</a>
+                                @*
+                                <a class="dropdown-item" ui-sref="news-categories">@Localizer["Manage News Categories"]</a>
+                                <a class="dropdown-item" ui-sref="news-items">@Localizer["Manage News Items"]</a>
+                                *@
+                            </div>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" id="navbarDropdownSystem" href="javascript:void(0)" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                @Localizer["System"]
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownSystem">
+                                <a class="dropdown-item" ui-sref="themes">@Localizer["Themes"]</a>
+                                @*
+                                <a class="dropdown-item" ui-sref="countries">@Localizer["Countries"]</a>
+                                <a class="dropdown-item" ui-sref="states-provinces">@Localizer["States or Provinces"]</a>
+                                <a class="dropdown-item" ui-sref="tax-classes">@Localizer["Tax Classes"]</a>
+                                <a class="dropdown-item" ui-sref="tax-rates">@Localizer["Tax Rates"]</a>
+                                <a class="dropdown-item" ui-sref="shipping-providers">@Localizer["Shipping Providers"]</a>
+                                <a class="dropdown-item" ui-sref="warehouses">@Localizer["Warehouses"]</a>
+                                <a class="dropdown-item" ui-sref="payment-providers">@Localizer["Payment Providers"]</a>
+                                *@
+                                <a class="dropdown-item" ui-sref="configuration">@Localizer["Settings"]</a>
+                                <a class="dropdown-item" ui-sref="localization">@Localizer["Translations"]</a>
+                            </div>
+                        </li>
+                    }
+                </ul>
+                <form asp-area="" asp-controller="Account" asp-action="LogOff" method="post" id="logoutForm" class="form-inline my-2 my-lg-0">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Manage" asp-action="Index" title="Manage">@Localizer["Hello {0}!", (await WorkContext.GetCurrentUser()).FullName]</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="javascript:void(0);" onclick="document.getElementById('logoutForm').submit();">@Localizer["Log off"]</a>
+                            <!--
+                            <button type="submit" role="link" class="btn btn-link navbar-btn navbar-link">@Localizer["Log off"]</button>
+                            -->
+                        </li>
+                    </ul>
+                </form>
+
+            </div>
+        </nav>
+    </header>
+    <main ui-view role="main" class="container body-content py-3">
+    </main>
+    <footer class="footer">
+        <div class="container">
+            <span class="pull-left">&copy; @DateTime.Now.Year - Semp</span>
+            <span class="pull-right">Powered by <a href="http://www.sempTCL.com.br" class="text-danger"><strong>SEMP TCL</strong></a></span>
+        </div>
+    </footer>
+</body>
+
+<script>
         window.Global_AssetVersion = "@Config["Global.AssetVersion"]";
-    </script>
-    <script simpl-append-version="true" src="~/lib/jquery/jquery.js"></script>
-    <script simpl-append-version="true" src="~/lib/bootstrap/js/bootstrap.js"></script>
-    <script simpl-append-version="true" src="~/lib/summernote/summernote.js"></script>
-    <script simpl-append-version="true" src="~/lib/angular/angular.js"></script>
-    <script simpl-append-version="true" src="~/lib/angular-ui-router/angular-ui-router.js"></script>
-    <script simpl-append-version="true" src="~/lib/angular-animate/angular-animate.js"></script>
-    <script simpl-append-version="true" src="~/lib/angular-aria/angular-aria.js"></script>
-    <script simpl-append-version="true" src="~/lib/angular-messages/angular-messages.js"></script>
-    <script simpl-append-version="true" src="~/lib/angular-material/angular-material.js"></script>
-    <script simpl-append-version="true" src="~/lib/angular-smart-table/smart-table.js"></script>
-    <script simpl-append-version="true" src="~/lib/ng-file-upload/ng-file-upload.js"></script>
-    <script simpl-append-version="true" src="~/lib/angular-bootstrap/ui-bootstrap.js"></script>
-    <script simpl-append-version="true" src="~/lib/angular-bootstrap/ui-bootstrap-tpls.js"></script>
-    <script simpl-append-version="true" src="~/lib/bootstrap-ui-datetime-picker/datetime-picker.js"></script>
-    <script simpl-append-version="true" src="~/lib/bootstrap-ui-datetime-picker/datetime-picker.tpls.js"></script>
-    <script simpl-append-version="true" src="~/lib/angular-summernote/angular-summernote.js"></script>
-    <script simpl-append-version="true" src="~/lib/angular-ui-tree/angular-ui-tree.js"></script>
-    <script simpl-append-version="true" src="~/lib/angular-bootstrap-colorpicker/js/bootstrap-colorpicker-module.js"></script>
-    <script simpl-append-version="true" src="~/lib/toastr/toastr.js"></script>
-    <script simpl-append-version="true" src="~/lib/bootbox/bootbox.js"></script>
-    <script simpl-append-version="true" src="~/lib/i18n/angular-locale_@(CultureInfo.CurrentCulture.Name.ToLower()).js"></script>
+</script>
+<script simpl-append-version="true" src="~/lib/jquery/jquery.js"></script>
+<script simpl-append-version="true" src="~/lib/bootstrap/js/bootstrap.js"></script>
+<script simpl-append-version="true" src="~/lib/summernote/summernote.js"></script>
+<script simpl-append-version="true" src="~/lib/angular/angular.js"></script>
+<script simpl-append-version="true" src="~/lib/angular-ui-router/angular-ui-router.js"></script>
+<script simpl-append-version="true" src="~/lib/angular-animate/angular-animate.js"></script>
+<script simpl-append-version="true" src="~/lib/angular-aria/angular-aria.js"></script>
+<script simpl-append-version="true" src="~/lib/angular-messages/angular-messages.js"></script>
+<script simpl-append-version="true" src="~/lib/angular-material/angular-material.js"></script>
+<script simpl-append-version="true" src="~/lib/angular-smart-table/smart-table.js"></script>
+<script simpl-append-version="true" src="~/lib/ng-file-upload/ng-file-upload.js"></script>
 
-    <script simpl-append-version="true" src="~/modules/core/admin/common/slugify.js"></script>
-    <script simpl-append-version="true" src="~/modules/core/admin/admin-app.js"></script>
-    <script simpl-append-version="true" src="~/modules/core/admin/common/common.js"></script>
-    <script simpl-append-version="true" src="~/modules/core/admin/common/summernote-service.js"></script>
-    <script simpl-append-version="true" src="~/modules/core/admin/common/st-date-range.js"></script>
-    <script simpl-append-version="true" src="~/modules/core/admin/common/translation-service.js"></script>
+<!--
+<script simpl-append-version="true" src="~/lib/angular-bootstrap/ui-bootstrap.js"></script>
+<script simpl-append-version="true" src="~/lib/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+-->
 
-    <script simpl-append-version="true" src="~/modules/core/admin/dashboard/dashboard.module.js"></script>
+<script simpl-append-version="true" src="~/lib/bootstrap-ui-datetime-picker/datetime-picker.js"></script>
+<script simpl-append-version="true" src="~/lib/bootstrap-ui-datetime-picker/datetime-picker.tpls.js"></script>
+<script simpl-append-version="true" src="~/lib/angular-summernote/angular-summernote.js"></script>
+<script simpl-append-version="true" src="~/lib/angular-ui-tree/angular-ui-tree.js"></script>
+<script simpl-append-version="true" src="~/lib/angular-bootstrap-colorpicker/js/bootstrap-colorpicker-module.js"></script>
+<script simpl-append-version="true" src="~/lib/toastr/toastr.js"></script>
+<script simpl-append-version="true" src="~/lib/bootbox/bootbox.js"></script>
+<script simpl-append-version="true" src="~/lib/i18n/angular-locale_@(CultureInfo.CurrentCulture.Name.ToLower()).js"></script>
 
-    <script simpl-append-version="true" src="~/modules/core/admin/core.module.js"></script>
-    <script simpl-append-version="true" src="~/modules/core/admin/user/user-service.js"></script>
-    <script simpl-append-version="true" src="~/modules/core/admin/user/user-list.js"></script>
-    <script simpl-append-version="true" src="~/modules/core/admin/user/user-form.js"></script>
-    <script simpl-append-version="true" src="~/modules/core/admin/widget/widget-service.js"></script>
-    <script simpl-append-version="true" src="~/modules/core/admin/widget/widget-instance-list.js"></script>
-    <script simpl-append-version="true" src="~/modules/core/admin/configuration/configuration-service.js"></script>
-    <script simpl-append-version="true" src="~/modules/core/admin/configuration/configuration.js"></script>
-    
-    @*
+<script simpl-append-version="true" src="~/modules/core/admin/common/slugify.js"></script>
+<script simpl-append-version="true" src="~/modules/core/admin/admin-app.js"></script>
+<script simpl-append-version="true" src="~/modules/core/admin/common/common.js"></script>
+<script simpl-append-version="true" src="~/modules/core/admin/common/summernote-service.js"></script>
+<script simpl-append-version="true" src="~/modules/core/admin/common/st-date-range.js"></script>
+<script simpl-append-version="true" src="~/modules/core/admin/common/translation-service.js"></script>
+
+<script simpl-append-version="true" src="~/modules/core/admin/dashboard/dashboard.module.js"></script>
+
+<script simpl-append-version="true" src="~/modules/core/admin/core.module.js"></script>
+<script simpl-append-version="true" src="~/modules/core/admin/user/user-service.js"></script>
+<script simpl-append-version="true" src="~/modules/core/admin/user/user-list.js"></script>
+<script simpl-append-version="true" src="~/modules/core/admin/user/user-form.js"></script>
+<script simpl-append-version="true" src="~/modules/core/admin/widget/widget-service.js"></script>
+<script simpl-append-version="true" src="~/modules/core/admin/widget/widget-instance-list.js"></script>
+<script simpl-append-version="true" src="~/modules/core/admin/configuration/configuration-service.js"></script>
+<script simpl-append-version="true" src="~/modules/core/admin/configuration/configuration.js"></script>
+
+@*
     <script simpl-append-version="true" src="~/modules/core/admin/customergroups/customergroup-service.js"></script>
     <script simpl-append-version="true" src="~/modules/core/admin/customergroups/customergroup-list.js"></script>
     <script simpl-append-version="true" src="~/modules/core/admin/customergroups/customergroup-form.js"></script>
-    *@
+*@
 
-    <script simpl-append-version="true" src="~/modules/core/admin/themes/theme-service.js"></script>
-    <script simpl-append-version="true" src="~/modules/core/admin/themes/theme-list.js"></script>
-    <script simpl-append-version="true" src="~/modules/core/admin/themes/online-theme-list.js"></script>
-    <script simpl-append-version="true" src="~/modules/core/admin/themes/theme-details.js"></script>
-    
-    @*
+<script simpl-append-version="true" src="~/modules/core/admin/themes/theme-service.js"></script>
+<script simpl-append-version="true" src="~/modules/core/admin/themes/theme-list.js"></script>
+<script simpl-append-version="true" src="~/modules/core/admin/themes/online-theme-list.js"></script>
+<script simpl-append-version="true" src="~/modules/core/admin/themes/theme-details.js"></script>
+
+@*
     <script simpl-append-version="true" src="~/modules/core/admin/countries/country-service.js"></script>
     <script simpl-append-version="true" src="~/modules/core/admin/countries/country-list.js"></script>
     <script simpl-append-version="true" src="~/modules/core/admin/countries/country-form.js"></script>
@@ -127,24 +275,24 @@
     <script simpl-append-version="true" src="~/modules/orders/admin/order/order-detail.js"></script>
     <script simpl-append-version="true" src="~/modules/orders/admin/order/order-widget.directive.js"></script>*@
 
-    <script simpl-append-version="true" src="~/modules/cms/admin/cms.module.js"></script>
-    <script simpl-append-version="true" src="~/modules/cms/admin/page/page-service.js"></script>
-    <script simpl-append-version="true" src="~/modules/cms/admin/page/page-list.js"></script>
-    <script simpl-append-version="true" src="~/modules/cms/admin/page/page-form.js"></script> 
-    <script simpl-append-version="true" src="~/modules/cms/admin/menu/menu-service.js"></script>
-    <script simpl-append-version="true" src="~/modules/cms/admin/menu/menu-list.js"></script>
-    <script simpl-append-version="true" src="~/modules/cms/admin/menu/menu-form.js"></script>
-    <script simpl-append-version="true" src="~/modules/cms/admin/menu/menu-form-create.js"></script>
-    
-    <script simpl-append-version="true" src="~/modules/cms/admin/carousel-widget/carousel-widget-service.js"></script>
-    <script simpl-append-version="true" src="~/modules/cms/admin/carousel-widget/carousel-widget-form.js"></script>
-    <script simpl-append-version="true" src="~/modules/cms/admin/html-widget/html-widget-service.js"></script>
-    <script simpl-append-version="true" src="~/modules/cms/admin/html-widget/html-widget-form.js"></script>
-    <script simpl-append-version="true" src="~/modules/cms/admin/spacebar-widget/spacebar-widget-service.js"></script>
-    <script simpl-append-version="true" src="~/modules/cms/admin/spacebar-widget/spacebar-widget-form.js"></script>
-    <script simpl-append-version="true" src="~/modules/cms/admin/html-widget/html-widget-service.js"></script>
-    <script simpl-append-version="true" src="~/modules/cms/admin/html-widget/html-widget-form.js"></script>
-    @*
+<script simpl-append-version="true" src="~/modules/cms/admin/cms.module.js"></script>
+<script simpl-append-version="true" src="~/modules/cms/admin/page/page-service.js"></script>
+<script simpl-append-version="true" src="~/modules/cms/admin/page/page-list.js"></script>
+<script simpl-append-version="true" src="~/modules/cms/admin/page/page-form.js"></script>
+<script simpl-append-version="true" src="~/modules/cms/admin/menu/menu-service.js"></script>
+<script simpl-append-version="true" src="~/modules/cms/admin/menu/menu-list.js"></script>
+<script simpl-append-version="true" src="~/modules/cms/admin/menu/menu-form.js"></script>
+<script simpl-append-version="true" src="~/modules/cms/admin/menu/menu-form-create.js"></script>
+
+<script simpl-append-version="true" src="~/modules/cms/admin/carousel-widget/carousel-widget-service.js"></script>
+<script simpl-append-version="true" src="~/modules/cms/admin/carousel-widget/carousel-widget-form.js"></script>
+<script simpl-append-version="true" src="~/modules/cms/admin/html-widget/html-widget-service.js"></script>
+<script simpl-append-version="true" src="~/modules/cms/admin/html-widget/html-widget-form.js"></script>
+<script simpl-append-version="true" src="~/modules/cms/admin/spacebar-widget/spacebar-widget-service.js"></script>
+<script simpl-append-version="true" src="~/modules/cms/admin/spacebar-widget/spacebar-widget-form.js"></script>
+<script simpl-append-version="true" src="~/modules/cms/admin/html-widget/html-widget-service.js"></script>
+<script simpl-append-version="true" src="~/modules/cms/admin/html-widget/html-widget-form.js"></script>
+@*
     <script simpl-append-version="true" src="~/modules/search/admin/search.module.js"></script>
     <script simpl-append-version="true" src="~/modules/search/admin/search-service.js"></script>
     <script simpl-append-version="true" src="~/modules/search/admin/most-search-keywords.directive.js"></script>
@@ -162,12 +310,12 @@
     <script simpl-append-version="true" src="~/modules/vendors/admin/vendors/vendor-service.js"></script>
     <script simpl-append-version="true" src="~/modules/vendors/admin/vendors/vendor-list.js"></script>
     <script simpl-append-version="true" src="~/modules/vendors/admin/vendors/vendor-form.js"></script>
-    *@
-    
-    <script simpl-append-version="true" src="~/modules/localization/admin/localization.module.js"></script>
-    <script simpl-append-version="true" src="~/modules/localization/admin/localization/localization-service.js"></script>
-    <script simpl-append-version="true" src="~/modules/localization/admin/localization/localization-form.js"></script>
-    @*
+*@
+
+<script simpl-append-version="true" src="~/modules/localization/admin/localization.module.js"></script>
+<script simpl-append-version="true" src="~/modules/localization/admin/localization/localization-service.js"></script>
+<script simpl-append-version="true" src="~/modules/localization/admin/localization/localization-form.js"></script>
+@*
         <script simpl-append-version="true" src="~/modules/news/admin/news.module.js"></script>
         <script simpl-append-version="true" src="~/modules/news/admin/news-categories/news-category-service.js"></script>
         <script simpl-append-version="true" src="~/modules/news/admin/news-categories/news-category-list.js"></script>
@@ -239,116 +387,6 @@
         <script simpl-append-version="true" src="~/modules/shipments/admin/shipment/shipment-list.js"></script>
         <script simpl-append-version="true" src="~/modules/shipments/admin/shipment/shipment-details.js"></script>
         <script simpl-append-version="true" src="~/modules/shipments/admin/shipment/shipment-list-by-order.directive.js"></script>
-    *@
-</head>
-<body>
-    <div class="navbar navbar-inverse">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a href="~/Admin" class="navbar-brand">@Localizer["Administration"]</a>
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    @if (User.IsInRole("admin"))
-                    {
-                    <li class="dropdown">
-                        <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">@Localizer["Site"] <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a ui-sref="users">@Localizer["Users"]</a></li>
-                            <li><a ui-sref="vendors">@Localizer["Vendors"]</a></li>
-                            <li><a ui-sref="customergroups">@Localizer["Customer Groups"]</a></li>
-                            <li><a ui-sref="reviews">@Localizer["Reviews"]</a></li>
-                            <li><a ui-sref="contact-area">@Localizer["Manage Contact Area"]</a></li>
-                            <li><a ui-sref="contact">@Localizer["Manage Contact"]</a></li>
-                        </ul>
-                    </li>
-                    }
-                    <li class="dropdown">
-                        <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">@Localizer["Catalog"] <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a ui-sref="product">@Localizer["Products"]</a></li>
-                            <li><a ui-sref="product-prices">@Localizer["Product Prices"]</a></li>
-                            @if(User.IsInRole("admin"))
-                            {
-                                <li><a ui-sref="category">@Localizer["Categories"]</a></li>
-                                <li><a ui-sref="brand">@Localizer["Brands"]</a></li>
-                                <li><a ui-sref="product-option">@Localizer["Product Options"]</a></li>
-                                <li><a ui-sref="product-attribute-group">@Localizer["Product Attribute Groups"]</a></li>
-                                <li><a ui-sref="product-attribute">@Localizer["Product Attributes"]</a></li>
-                                <li><a ui-sref="product-template">@Localizer["Product Templates"]</a></li>
-                            }
-                        </ul>
-                    </li>
-                    <li class="dropdown">
-                        <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">@Localizer["Sales"] <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a ui-sref="order">@Localizer["Orders"]</a></li>
-                            <li><a ui-sref="stocks">@Localizer["Stocks"]</a></li>
-                            <li><a ui-sref="shipments">@Localizer["Shipments"]</a></li>
-                        </ul>
-                    </li>
-                    @if (User.IsInRole("admin"))
-                    {
-                    <li class="dropdown">
-                        <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">@Localizer["Promotions"] <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a ui-sref="cart-rules">@Localizer["Cart Price Rules"]</a></li>
-                            <li><a ui-sref="cart-rule-usages">@Localizer["Cart Price Rule Usages"]</a></li>
-                        </ul>
-                    </li>
-                    <li class="dropdown">
-                        <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">@Localizer["Content"] <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a ui-sref="page">@Localizer["Pages"]</a></li>
-                            <li><a ui-sref="menus">@Localizer["Menus"]</a></li>
-                            <li><a ui-sref="widget">@Localizer["Widgets"]</a></li>
-                            <li><a ui-sref="news-categories">Manage News Categories</a></li>
-                            <li><a ui-sref="news-items">Manage News Items</a></li>
-                        </ul>
-                    </li>
-                    <li class="dropdown">
-                        <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">@Localizer["System"] <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a ui-sref="themes">@Localizer["Themes"]</a></li>
-                            <li><a ui-sref="countries">@Localizer["Countries"]</a></li>
-                            <li><a ui-sref="states-provinces">@Localizer["States or Provinces"]</a></li>
-                            <li><a ui-sref="tax-classes">@Localizer["Tax Classes"]</a></li>
-                            <li><a ui-sref="tax-rates">@Localizer["Tax Rates"]</a></li>
-                            <li><a ui-sref="shipping-providers">@Localizer["Shipping Providers"]</a></li>
-                            <li><a ui-sref="warehouses">@Localizer["Warehouses"]</a></li>
-                            <li><a ui-sref="payment-providers">@Localizer["Payment Providers"]</a></li>
-                            <li><a ui-sref="configuration">@Localizer["Settings"]</a></li>
-                            <li><a ui-sref="localization">@Localizer["Translations"]</a></li>
-                        </ul>
-                    </li>
-                    }
-                </ul>
-                <form asp-area="" asp-controller="Account" asp-action="LogOff" method="post" id="logoutForm" class="navbar-right">
-                    <ul class="nav navbar-nav navbar-right">
-                        <li>
-                            <a asp-area="" asp-controller="Manage" asp-action="Index" title="Manage">@Localizer["Hello {0}!", (await WorkContext.GetCurrentUser()).FullName]</a>
-                        </li>
-                        <li>
-                            <button type="submit" class="btn btn-link navbar-btn navbar-link">@Localizer["Log off"]</button>
-                        </li>
-                    </ul>
-                </form>
-            </div>
-        </div>
-    </div>
+*@
 
-    <div class="container-fluid body-content">
-        <div ui-view></div>
-        <hr />
-        <footer>
-            <p class="pull-left">&copy; @DateTime.Now.Year - Semp</p>
-            <p class="pull-right">Powered by <a href="http://www.SempTcl.com.br"><strong>Semp TCL</strong></a></p>
-        </footer>
-    </div>
-</body>
 </html>

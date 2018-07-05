@@ -6,8 +6,8 @@
         'ngMessages',
         'smart-table',
         'ngFileUpload',
-        'ui.bootstrap',
-        'ui.bootstrap.datetimepicker',
+        /*'ui.bootstrap',
+        'ui.bootstrap.datetimepicker',*/
         'ui.tree',
         'summernote',
         'colorpicker.module',

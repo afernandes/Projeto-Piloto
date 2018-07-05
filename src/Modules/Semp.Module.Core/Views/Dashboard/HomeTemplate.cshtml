@@ -2,15 +2,15 @@
     Layout = null;
 }
 
-<h1>@Localizer["Dashboard"]</h1>
+<h1 class="py-md-3">@Localizer["Dashboard"]</h1>
 
 <div class="row">
     <div class="col-md-6">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">@Localizer["Latest orders"]</h3>
-            </div>
-            <div class="panel-body">
+        <div class="card mb-4 box-shadow">
+            <h4 class="card-header">
+                @Localizer["Latest orders"]
+            </h4>
+            <div class="card-body">
                 <order-widget status="0" num-records="5"></order-widget>
             </div>
         </div>
@@ -18,11 +18,11 @@
     @if (User.IsInRole("admin"))
     {
     <div class="col-md-6">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">@Localizer["Pending reviews"]</h3>
-            </div>
-            <div class="panel-body">
+        <div class="card mb-4 box-shadow">
+            <h4 class="card-header">
+                @Localizer["Pending reviews"]
+            </h4>
+            <div class="card-body">
                 <review-widget status="1" num-records="5"></review-widget>
             </div>
         </div>
@@ -33,21 +33,21 @@
 {
 <div class="row">
     <div class="col-md-6">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">@Localizer["Most search keywords"]</h3>
-            </div>
-            <div class="panel-body">
+        <div class="card mb-4 box-shadow">
+            <h4 class="card-header">
+                @Localizer["Most search keywords"]
+            </h4>
+            <div class="card-body">
                 <most-search-keyword></most-search-keyword>
             </div>
         </div>
     </div>
     <div class="col-md-6">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">@Localizer["Most viewed products"]</h3>
-            </div>
-            <div class="panel-body">
+        <div class="card mb-4 box-shadow">
+            <h4 class="card-header">
+                @Localizer["Most viewed products"]
+            </h4>
+            <div class="card-body">
                 <most-viewed-products></most-viewed-products>
             </div>
         </div>
