@@ -1,7 +1,7 @@
 ﻿/*global jQuery, window*/
 $(function () {
-        $('.lang-selector li').on('click', function (e) {
-            var lang = $(this).find('a').attr('data-value'),
+        $('.lang-selector a').on('click', function (e) {
+            var lang = $(this).attr('data-value'),
                 $langForm = $('#lang-form'),
                 $cultureInput = $langForm.find('input[name=culture]');
 

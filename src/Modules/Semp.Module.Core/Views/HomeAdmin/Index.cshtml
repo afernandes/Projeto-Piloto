@@ -18,28 +18,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin - Semp</title>
     <link simpl-append-version="true" rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.css" />
-    <link simpl-append-version="true" rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.css" />
+    <link simpl-append-version="true" rel="stylesheet" href="~/lib/font-awesome/css/fontawesome-all.css" />
     <!--
     <link simpl-append-version="true" rel="stylesheet" href="~/lib/angular-material/angular-material.css" />
     -->
     <link simpl-append-version="true" rel="stylesheet" href="~/lib/angular-bootstrap/ui-bootstrap-csp.css" />
     <link simpl-append-version="true" rel="stylesheet" href="~/lib/toastr/toastr.css" />
-    <link simpl-append-version="true" rel="stylesheet" href="~/lib/summernote/summernote.css" />
+    <link simpl-append-version="true" rel="stylesheet" href="~/lib/summernote/summernote-bs4.css" />
     <link simpl-append-version="true" rel="stylesheet" href="~/lib/angular-ui-tree/angular-ui-tree.min.css" />
     <link simpl-append-version="true" rel="stylesheet" href="~/lib/angular-bootstrap-colorpicker/css/colorpicker.min.css" />
     <link simpl-append-version="true" rel="stylesheet" href="~/modules/core/admin/admin-core.css" />
+    <link simpl-append-version="true" rel="stylesheet" href="~/modules/core/admin/offcanvas.css" />
 
-    <link href="https://unpkg.com/ionicons@4.2.4/dist/css/ionicons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/ionicons@4.2.4/dist/css/ionicons.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
 </head>
-<body>
+<body class="bg-light">
     <header>
-        <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+        <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
             <a class="navbar-brand" href="~/Admin">@Localizer["Administration"]</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler p-0 border-0"
+                    type="button"
+                    data-toggle="offcanvas">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <div class="navbar-collapse offcanvas-collapse"
+                 id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
                     @if (User.IsInRole("admin"))
                     {
@@ -50,64 +55,64 @@
                             <div class="dropdown-menu" aria-labelledby="navbarDropdownSite">
                                 <a class="dropdown-item" ui-sref="users">@Localizer["Users"]</a>
                                 @*
-                                <a class="dropdown-item" ui-sref="vendors">@Localizer["Vendors"]</a>
-                                <a class="dropdown-item" ui-sref="customergroups">@Localizer["Customer Groups"]</a>
-                                <a class="dropdown-item" ui-sref="reviews">@Localizer["Reviews"]</a>
-                                <a class="dropdown-item" ui-sref="contact-area">@Localizer["Manage Contact Area"]</a>
-                                <a class="dropdown-item" ui-sref="contact">@Localizer["Manage Contact"]</a>
+                                    <a class="dropdown-item" ui-sref="vendors">@Localizer["Vendors"]</a>
+                                    <a class="dropdown-item" ui-sref="customergroups">@Localizer["Customer Groups"]</a>
+                                    <a class="dropdown-item" ui-sref="reviews">@Localizer["Reviews"]</a>
+                                    <a class="dropdown-item" ui-sref="contact-area">@Localizer["Manage Contact Area"]</a>
+                                    <a class="dropdown-item" ui-sref="contact">@Localizer["Manage Contact"]</a>
                                 *@
                             </div>
                         </li>
                     }
 
                     @*
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" id="navbarDropdownCatalog" href="javascript:void(0)" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            @Localizer["Catalog"]
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdownCatalog">
-                            <a class="dropdown-item" ui-sref="product">@Localizer["Products"]</a>
-                            <a class="dropdown-item" ui-sref="product-prices">@Localizer["Product Prices"]</a>
-                            @if (User.IsInRole("admin"))
-                            {
-                                <a class="dropdown-item" ui-sref="category">@Localizer["Categories"]</a>
-                                <a class="dropdown-item" ui-sref="brand">@Localizer["Brands"]</a>
-                                <a class="dropdown-item" ui-sref="product-option">@Localizer["Product Options"]</a>
-                                <a class="dropdown-item" ui-sref="product-attribute-group">@Localizer["Product Attribute Groups"]</a>
-                                <a class="dropdown-item" ui-sref="product-attribute">@Localizer["Product Attributes"]</a>
-                                <a class="dropdown-item" ui-sref="product-template">@Localizer["Product Templates"]</a>
-                            }
-                        </div>
-                    </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" id="navbarDropdownCatalog" href="javascript:void(0)" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                @Localizer["Catalog"]
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownCatalog">
+                                <a class="dropdown-item" ui-sref="product">@Localizer["Products"]</a>
+                                <a class="dropdown-item" ui-sref="product-prices">@Localizer["Product Prices"]</a>
+                                @if (User.IsInRole("admin"))
+                                {
+                                    <a class="dropdown-item" ui-sref="category">@Localizer["Categories"]</a>
+                                    <a class="dropdown-item" ui-sref="brand">@Localizer["Brands"]</a>
+                                    <a class="dropdown-item" ui-sref="product-option">@Localizer["Product Options"]</a>
+                                    <a class="dropdown-item" ui-sref="product-attribute-group">@Localizer["Product Attribute Groups"]</a>
+                                    <a class="dropdown-item" ui-sref="product-attribute">@Localizer["Product Attributes"]</a>
+                                    <a class="dropdown-item" ui-sref="product-template">@Localizer["Product Templates"]</a>
+                                }
+                            </div>
+                        </li>
                     *@
 
                     @*
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" id="navbarDropdownSales" href="javascript:void(0)" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            @Localizer["Sales"]
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdownSales">
-                            <a class="dropdown-item" ui-sref="order">@Localizer["Orders"]</a>
-                            <a class="dropdown-item" ui-sref="stocks">@Localizer["Stocks"]</a>
-                            <a class="dropdown-item" ui-sref="shipments">@Localizer["Shipments"]</a>
-                        </div>
-                    </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" id="navbarDropdownSales" href="javascript:void(0)" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                @Localizer["Sales"]
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownSales">
+                                <a class="dropdown-item" ui-sref="order">@Localizer["Orders"]</a>
+                                <a class="dropdown-item" ui-sref="stocks">@Localizer["Stocks"]</a>
+                                <a class="dropdown-item" ui-sref="shipments">@Localizer["Shipments"]</a>
+                            </div>
+                        </li>
                     *@
 
                     @if (User.IsInRole("admin"))
                     {
                         @*
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" id="navbarDropdownPromotions" href="javascript:void(0)" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                @Localizer["Promotions"]
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdownPromotions">
-                                <a class="dropdown-item" ui-sref="cart-rules">@Localizer["Cart Price Rules"]</a>
-                                <a class="dropdown-item" ui-sref="cart-rule-usages">@Localizer["Cart Price Rule Usages"]</a>
-                            </div>
-                        </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" id="navbarDropdownPromotions" href="javascript:void(0)" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    @Localizer["Promotions"]
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdownPromotions">
+                                    <a class="dropdown-item" ui-sref="cart-rules">@Localizer["Cart Price Rules"]</a>
+                                    <a class="dropdown-item" ui-sref="cart-rule-usages">@Localizer["Cart Price Rule Usages"]</a>
+                                </div>
+                            </li>
                         *@
-                        
+
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" id="navbarDropdownContent" href="javascript:void(0)" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 @Localizer["Content"]
@@ -117,8 +122,8 @@
                                 <a class="dropdown-item" ui-sref="menus">@Localizer["Menus"]</a>
                                 <a class="dropdown-item" ui-sref="widget">@Localizer["Widgets"]</a>
                                 @*
-                                <a class="dropdown-item" ui-sref="news-categories">@Localizer["Manage News Categories"]</a>
-                                <a class="dropdown-item" ui-sref="news-items">@Localizer["Manage News Items"]</a>
+                                    <a class="dropdown-item" ui-sref="news-categories">@Localizer["Manage News Categories"]</a>
+                                    <a class="dropdown-item" ui-sref="news-items">@Localizer["Manage News Items"]</a>
                                 *@
                             </div>
                         </li>
@@ -129,13 +134,13 @@
                             <div class="dropdown-menu" aria-labelledby="navbarDropdownSystem">
                                 <a class="dropdown-item" ui-sref="themes">@Localizer["Themes"]</a>
                                 @*
-                                <a class="dropdown-item" ui-sref="countries">@Localizer["Countries"]</a>
-                                <a class="dropdown-item" ui-sref="states-provinces">@Localizer["States or Provinces"]</a>
-                                <a class="dropdown-item" ui-sref="tax-classes">@Localizer["Tax Classes"]</a>
-                                <a class="dropdown-item" ui-sref="tax-rates">@Localizer["Tax Rates"]</a>
-                                <a class="dropdown-item" ui-sref="shipping-providers">@Localizer["Shipping Providers"]</a>
-                                <a class="dropdown-item" ui-sref="warehouses">@Localizer["Warehouses"]</a>
-                                <a class="dropdown-item" ui-sref="payment-providers">@Localizer["Payment Providers"]</a>
+                                    <a class="dropdown-item" ui-sref="countries">@Localizer["Countries"]</a>
+                                    <a class="dropdown-item" ui-sref="states-provinces">@Localizer["States or Provinces"]</a>
+                                    <a class="dropdown-item" ui-sref="tax-classes">@Localizer["Tax Classes"]</a>
+                                    <a class="dropdown-item" ui-sref="tax-rates">@Localizer["Tax Rates"]</a>
+                                    <a class="dropdown-item" ui-sref="shipping-providers">@Localizer["Shipping Providers"]</a>
+                                    <a class="dropdown-item" ui-sref="warehouses">@Localizer["Warehouses"]</a>
+                                    <a class="dropdown-item" ui-sref="payment-providers">@Localizer["Payment Providers"]</a>
                                 *@
                                 <a class="dropdown-item" ui-sref="configuration">@Localizer["Settings"]</a>
                                 <a class="dropdown-item" ui-sref="localization">@Localizer["Translations"]</a>
@@ -159,9 +164,12 @@
 
             </div>
         </nav>
+
     </header>
-    <main ui-view role="main" class="container body-content py-3">
+
+    <main ui-view role="main" >
     </main>
+
     <footer class="footer">
         <div class="container">
             <span class="pull-left">&copy; @DateTime.Now.Year - Semp</span>
@@ -171,11 +179,14 @@
 </body>
 
 <script>
-        window.Global_AssetVersion = "@Config["Global.AssetVersion"]";
+    window.Global_AssetVersion = "@Config["Global.AssetVersion"]";
+    window.Global_CurrentCulture = "@(CultureInfo.CurrentCulture.Name.ToLower())";
 </script>
 <script simpl-append-version="true" src="~/lib/jquery/jquery.js"></script>
+<script simpl-append-version="true" src="~/lib/popper/umd/popper.min.js"></script>
 <script simpl-append-version="true" src="~/lib/bootstrap/js/bootstrap.js"></script>
-<script simpl-append-version="true" src="~/lib/summernote/summernote.js"></script>
+<script simpl-append-version="true" src="~/lib/summernote/summernote-bs4.js"></script>
+<script simpl-append-version="true" src="~/lib/summernote/lang/summernote-@(CultureInfo.CurrentCulture.Name.ToLower()).js"></script>
 <script simpl-append-version="true" src="~/lib/angular/angular.js"></script>
 <script simpl-append-version="true" src="~/lib/angular-ui-router/angular-ui-router.js"></script>
 <script simpl-append-version="true" src="~/lib/angular-animate/angular-animate.js"></script>
@@ -389,4 +400,5 @@
         <script simpl-append-version="true" src="~/modules/shipments/admin/shipment/shipment-list-by-order.directive.js"></script>
 *@
 
+<script simpl-append-version="true" src="~/modules/core/admin/offcanvas.js"></script>
 </html>

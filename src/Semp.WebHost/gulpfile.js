@@ -61,7 +61,8 @@ var bower = {
     "toastr": "toastr/toastr*.{js,css}",
     "bootbox": "bootbox/bootbox*.{js,css}",
     "angular-ui-tree": "angular-ui-tree/dist/*.*",
-    "angular-bootstrap-colorpicker": "angular-bootstrap-colorpicker/{js,css,img}/*.*"
+    "angular-bootstrap-colorpicker": "angular-bootstrap-colorpicker/{js,css,img}/*.*",
+    "popper": "popper.js/dist/**/*.*"
 };
 
 var modules = loadModules();
