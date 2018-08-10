@@ -1,0 +1,47 @@
+﻿@model Semp.Module.Integrator.ViewModels.OrderSelecionViewModel
+
+@{
+    ViewData["Title"] = Localizer["Order Errors"];
+}
+
+<div class="card mb-3">
+    <div class="card-header d-flex align-items-center">
+        <span style="" class="mr-3 icon ion-md-copy h1"></span>
+        <div class="lh-100 flex-grow-1">
+            <h4 class="mb-0 lh-100 ng-binding">@Localizer["Order Errors"]</h4>
+            <small class="text-muted">Errors in order integration</small>
+        </div>
+    </div>
+    <div class="card-body p-0 table-responsive">
+        <div id="checkboxes">
+            <table class="table table-striped m-0 order-history">
+                <!--
+                    Id
+                    ORDER_TYPE
+                    PEDIDO_LEGADO
+                    LOTE_ATENDIMENTO
+                    UPDATE_TIME_SAP
+                    ERRO
+                    CNPJ
+                    Cliente
+                -->
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>@Localizer["Type"]</th>
+                        <th>@Localizer["Order Legacy"]</th>
+                        <th>@Localizer["Attendance"]</th>
+                        <th>@Localizer["Date"]</th>
+                        <th>@Localizer["Error"]</th>
+                        <th>@Localizer["Document"]</th>
+                        <th>@Localizer["Name"]</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @Html.EditorFor(model => model.Order)
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

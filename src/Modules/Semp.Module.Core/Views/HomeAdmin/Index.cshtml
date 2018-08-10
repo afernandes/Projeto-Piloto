@@ -65,6 +65,16 @@
                         </li>
                     }
 
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" id="navbarDropdownSite" href="javascript:void(0)" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            @Localizer["Integrator"]
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownSite">
+                            <a class="dropdown-item" ui-sref="integrator-order">@Localizer["Orders"]</a>
+                        </div>
+                    </li>
+
+
                     @*
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" id="navbarDropdownCatalog" href="javascript:void(0)" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -167,7 +177,7 @@
 
     </header>
 
-    <main ui-view role="main" >
+    <main ui-view role="main">
     </main>
 
     <footer class="footer">
@@ -186,7 +196,12 @@
 <script simpl-append-version="true" src="~/lib/popper/umd/popper.min.js"></script>
 <script simpl-append-version="true" src="~/lib/bootstrap/js/bootstrap.js"></script>
 <script simpl-append-version="true" src="~/lib/summernote/summernote-bs4.js"></script>
-<script simpl-append-version="true" src="~/lib/summernote/lang/summernote-@(CultureInfo.CurrentCulture.Name.ToLower()).js"></script>
+
+@if (CultureInfo.CurrentCulture.Name.ToLower() != "en-us")
+{
+    <script simpl-append-version="true" src="~/lib/summernote/lang/summernote-@(CultureInfo.CurrentCulture.Name.ToLower()).js"></script>
+}
+
 <script simpl-append-version="true" src="~/lib/angular/angular.js"></script>
 <script simpl-append-version="true" src="~/lib/angular-ui-router/angular-ui-router.js"></script>
 <script simpl-append-version="true" src="~/lib/angular-animate/angular-animate.js"></script>
@@ -285,6 +300,12 @@
     <script simpl-append-version="true" src="~/modules/orders/admin/order/order-list.js"></script>
     <script simpl-append-version="true" src="~/modules/orders/admin/order/order-detail.js"></script>
     <script simpl-append-version="true" src="~/modules/orders/admin/order/order-widget.directive.js"></script>*@
+
+<script simpl-append-version="true" src="~/modules/integrator/admin/integrator.module.js"></script>
+<script simpl-append-version="true" src="~/modules/integrator/admin/integrator/order-service.js"></script>
+<script simpl-append-version="true" src="~/modules/integrator/admin/integrator/order-list.js"></script>
+<script simpl-append-version="true" src="~/modules/integrator/admin/integrator/order-detail.js"></script>
+<script simpl-append-version="true" src="~/modules/integrator/admin/integrator/order-widget.directive.js"></script>
 
 <script simpl-append-version="true" src="~/modules/cms/admin/cms.module.js"></script>
 <script simpl-append-version="true" src="~/modules/cms/admin/page/page-service.js"></script>

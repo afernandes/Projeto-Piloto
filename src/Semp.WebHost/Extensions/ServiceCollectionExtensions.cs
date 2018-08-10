@@ -111,7 +111,7 @@ namespace Semp.WebHost.Extensions
                         throw new Exception($"Cannot load {file.FullName} {tryToLoadAssemblyVersion} because {assembly.Location} {loadedAssemblyVersion} has been loaded");
                     }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     continue;
                 }
@@ -234,6 +234,18 @@ namespace Semp.WebHost.Extensions
             services.AddDbContextPool<SimplDbContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
                     b => b.MigrationsAssembly("Semp.WebHost")));
+
+            services.AddDbContextPool<SempDbContext>(options =>
+            {
+                options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+                options.UseSqlServer(configuration.GetConnectionString("SempConnection"),
+                b =>
+                {
+                    b.MigrationsAssembly("Semp.WebHost");
+                    b.MigrationsHistoryTable("__EFMigrationsHistory2");
+                });
+            });
+
             return services;
         }
 
@@ -261,7 +273,10 @@ namespace Semp.WebHost.Extensions
                 builder.RegisterAssemblyTypes(module.Assembly).Where(t => t.Name.EndsWith("Service")).AsImplementedInterfaces();
                 builder.RegisterAssemblyTypes(module.Assembly).Where(t => t.Name.EndsWith("ServiceProvider")).AsImplementedInterfaces();
                 builder.RegisterAssemblyTypes(module.Assembly).Where(t => t.Name.EndsWith("Handler")).AsImplementedInterfaces();
+                builder.RegisterAssemblyTypes(module.Assembly).Where(t => t.Name.EndsWith("DbContext")).PropertiesAutowired();
             }
+
+            builder.RegisterType<SempDbContext>().PropertiesAutowired();
 
             builder.RegisterInstance(configuration);
             builder.RegisterInstance(hostingEnvironment);

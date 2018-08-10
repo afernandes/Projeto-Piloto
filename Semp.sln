@@ -19,6 +19,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Semp.Module.Cms", "src\Modu
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Semp.Module.StorageLocal", "src\Modules\Semp.Module.StorageLocal\Semp.Module.StorageLocal.csproj", "{A90D2004-4427-47BE-8ECB-12F97274ABFF}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Semp.Module.Integrator", "src\Modules\Semp.Module.Integrator\Semp.Module.Integrator.csproj", "{C38D371F-0E5A-42C4-9AF3-7241EA223D9E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,6 +55,10 @@ Global
 		{A90D2004-4427-47BE-8ECB-12F97274ABFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A90D2004-4427-47BE-8ECB-12F97274ABFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A90D2004-4427-47BE-8ECB-12F97274ABFF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C38D371F-0E5A-42C4-9AF3-7241EA223D9E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C38D371F-0E5A-42C4-9AF3-7241EA223D9E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C38D371F-0E5A-42C4-9AF3-7241EA223D9E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C38D371F-0E5A-42C4-9AF3-7241EA223D9E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -63,6 +69,7 @@ Global
 		{11729A68-020C-4AFE-A719-8BBCDC5C470C} = {677A0274-9889-4A69-881A-73AA94A27546}
 		{9A4B1923-A596-407C-8DF4-FCBCB24157E0} = {677A0274-9889-4A69-881A-73AA94A27546}
 		{A90D2004-4427-47BE-8ECB-12F97274ABFF} = {677A0274-9889-4A69-881A-73AA94A27546}
+		{C38D371F-0E5A-42C4-9AF3-7241EA223D9E} = {677A0274-9889-4A69-881A-73AA94A27546}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B66C1079-CAC1-4619-94BE-259788AF174F}

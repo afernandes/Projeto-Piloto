@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<Semp.Module.Cms.ViewModels.MenuItemVm>
 
-<ul class="list-unstyled">
+<ul class="@ViewBag.CssClass">
     @foreach (var item in Model)
     {
         <li>

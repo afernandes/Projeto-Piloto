@@ -16,6 +16,7 @@
         'semp.core',
         /*'semp.catalog',
         'semp.orders',*/
+        'semp.integrator',
         'semp.cms',
         /*'semp.search',
         'semp.reviews',

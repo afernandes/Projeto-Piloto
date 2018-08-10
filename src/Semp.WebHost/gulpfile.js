@@ -23,7 +23,7 @@ var paths = {
     },
     dev: {
         modules: "../Modules/",
-        moduleBin: "/bin/" + buildConfigurationName +"/netcoreapp2.1/"
+        moduleBin: "/bin/" + buildConfigurationName + "/netcoreapp2.1/"
     }
 };
 
@@ -105,8 +105,8 @@ gulp.task('copy-modules', ['clean-module'], function () {
     modules.forEach(function (module) {
         if (!module.isBundledWithHost) {
             console.log('copying ' + paths.dev.modules + module.fullName + paths.dev.moduleBin);
-        gulp.src(paths.dev.modules + module.fullName + paths.dev.moduleBin + '**/*.*')
-            .pipe(gulp.dest(paths.host.modules + module.fullName + paths.host.moduleBin));
+            gulp.src(paths.dev.modules + module.fullName + paths.dev.moduleBin + '**/*.*')
+                .pipe(gulp.dest(paths.host.modules + module.fullName + paths.host.moduleBin));
         }
     });
 });

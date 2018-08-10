@@ -1,0 +1,66 @@
+﻿<div class="container body-content py-3">
+
+    <div class="card">
+        <div class="card-header d-flex align-items-center">
+            <span style="" class="mr-3 icon ion-md-copy h1"></span>
+            <div class="lh-100 flex-grow-1">
+                <h4 class="mb-0 lh-100 ng-binding">{{::vm.translate.get('Orders')}}</h4>
+                <small class="text-muted">List orders</small>
+            </div>            
+        </div>
+        <div class="card-body p-0 table-responsive">
+
+            <table class="table table-striped m-0" st-pipe="vm.getOrders" st-table="vm.orders">
+                <thead>
+                    <tr>                        
+                        <th st-sort="order_type" class="sortable">{{::vm.translate.get('Type')}}</th>
+                        <th st-sort="pedido_legado" class="sortable">{{::vm.translate.get('Legacy')}}</th>
+                        <th st-sort="lote_atendimento" class="sortable">{{::vm.translate.get('Lote')}}</th>
+                        <th st-sort="update_time_sap" class="sortable">{{::vm.translate.get('Send Date')}}</th>
+                        <th st-sort="erro" class="sortable">{{::vm.translate.get('Error')}}</th>
+                        <th st-sort="cnpj" class="sortable">{{::vm.translate.get('Doc. Number')}}</th>
+                        <th st-sort="cliente" class="sortable">{{::vm.translate.get('Client Name')}}</th>
+                        <th>{{::vm.translate.get('Actions')}}</th>
+                    </tr>
+                    <tr>
+                        <th>
+                            <div class="form-group">
+                                <input type="number" class="form-control" st-search="Id" />
+                            </div>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th ng-show="!vm.isLoading" colspan="8">{{vm.tableStateRef.pagination.totalItemCount | number:0}} records found</th>
+                    </tr>
+                </thead>
+                <tbody ng-show="!vm.isLoading">
+                    <tr ng-repeat="order in vm.orders">                        
+                        <td>{{order.order_type}}</td>
+                        <td>{{order.pedido_legado}}</td>
+                        <td>{{order.lote_atendimento}}</td>
+                        <td>{{order.update_time_sap}}</td>
+                        <td>{{order.erro}}</td>
+                        <td>{{order.cnpj}}</td>
+                        <td>{{order.cliente}}</td>
+                        <td>
+                            <a ui-sref="integrator-order-detail({id: order.id})" title="View" class="btn btn-primary btn-xs">
+                                <i class="icon ion-md-eye"></i>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+                <tbody ng-show="vm.isLoading">
+                    <tr>
+                        <td colspan="8" class="text-center">{{::vm.translate.get('Loading...')}}</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td class="text-center" st-pagination="" st-items-by-page="50" st-displayed-pages="10" colspan="8"></td>
+                    </tr>
+                </tfoot>
+            </table>
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,33 @@
+﻿@model Semp.Module.Integrator.ViewModels.OrderDetailVm
+
+<tr>
+    <td style="text-align:center">
+        @Html.CheckBoxFor(model => model.Selected)
+    </td>
+    <td>
+        @Html.DisplayFor(model => model.OrderType)
+    </td>
+    <td>
+        @Html.DisplayFor(model => model.OrderLegacy)
+    </td>
+    <td>
+        @Html.DisplayFor(model => model.Attendence)
+    </td>
+    <td>
+        @Html.DisplayFor(model => model.UpdateTimeSap)
+    </td>
+    <td>
+        @Html.DisplayFor(model => model.Error)
+    </td>
+    <td>
+        @Html.DisplayFor(model => model.DocumentNumber)
+    </td>
+    <td>
+        @Html.DisplayFor(model => model.ClientName)
+    </td>
+
+    <td>
+        @Html.HiddenFor(model => model.Id)
+        @Html.ActionLink("Reenviar", "Reenviar", new { id = Model.Id }, new { @class = "btn btn-primary btn-xs" })
+    </td>
+</tr>

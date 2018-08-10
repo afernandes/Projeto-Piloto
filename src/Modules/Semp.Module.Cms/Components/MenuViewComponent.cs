@@ -8,6 +8,7 @@ using Semp.Infrastructure.Data;
 using Semp.Infrastructure.Web;
 using Semp.Module.Cms.Models;
 using Semp.Module.Cms.ViewModels;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Semp.Module.Cms.Components
 {
@@ -41,7 +42,7 @@ namespace Semp.Module.Cms.Components
         }
         */
 
-        public async Task<IViewComponentResult> InvokeAsync(string menuName)
+        public async Task<IViewComponentResult> InvokeAsync(string menuName, string viewName = "Default")
         {
             var menu = await _menuRepository.Query().Include(x => x.MenuItems).ThenInclude(m => m.Entity).FirstOrDefaultAsync(x => x.Name == menuName);
             if (menu == null)
@@ -56,8 +57,8 @@ namespace Semp.Module.Cms.Components
                 var menuItemVm = Map(item);
                 menuItemVms.Add(menuItemVm);
             }
-
-            return View(this.GetViewPath(), menuItemVms);
+           
+            return View(this.GetViewPath(viewName), menuItemVms);
         }
 
         private MenuItemVm Map(MenuItem menuItem)
