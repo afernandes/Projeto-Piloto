@@ -12,36 +12,78 @@
             <small class="text-muted">Errors in order integration</small>
         </div>
     </div>
-    <div class="card-body p-0 table-responsive">
-        <div id="checkboxes">
-            <table class="table table-striped m-0 order-history">
-                <!--
-                    Id
-                    ORDER_TYPE
-                    PEDIDO_LEGADO
-                    LOTE_ATENDIMENTO
-                    UPDATE_TIME_SAP
-                    ERRO
-                    CNPJ
-                    Cliente
-                -->
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th>@Localizer["Type"]</th>
-                        <th>@Localizer["Order Legacy"]</th>
-                        <th>@Localizer["Attendance"]</th>
-                        <th>@Localizer["Date"]</th>
-                        <th>@Localizer["Error"]</th>
-                        <th>@Localizer["Document"]</th>
-                        <th>@Localizer["Name"]</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @Html.EditorFor(model => model.Order)
-                </tbody>
-            </table>
+    <div class="card-body">
+        <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="checkall">
+            <label class="custom-control-label" for="checkall">@Localizer["Check All"]</label>
         </div>
     </div>
+    @using (Html.BeginForm("SubmitSelected", "Order", FormMethod.Post, new { encType = "multipart/form-data", name = "myform" }))
+    {
+        <div class="card-body p-0 table-responsive">
+            <div id="checkboxes">
+                <table class="table table-striped m-0 order-history">
+                    <!--
+                        Id
+                        ORDER_TYPE
+                        PEDIDO_LEGADO
+                        LOTE_ATENDIMENTO
+                        UPDATE_TIME_SAP
+                        ERRO
+                        CNPJ
+                        Cliente
+                    -->
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>@Localizer["Type"]</th>
+                            <th>@Localizer["Order Legacy"]</th>
+                            <th>@Localizer["Attendance"]</th>
+                            <th>@Localizer["Send Date"]</th>
+                            <th>@Localizer["Error"]</th>
+                            <th>@Localizer["Document"]</th>
+                            <th>@Localizer["Client"]</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @Html.EditorFor(model => model.Order)
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+        <div class="card-body">
+            <input type="submit" name="operation" id="submit" value="@Localizer["Resend Selected"]" class="btn btn-primary" />
+        </div>
+    }
 </div>
+
+@section Scripts {
+    <script src="~/lib/jquery-validation/jquery.validate.js"></script>
+
+    <script type="text/javascript">
+
+        function toggleChecked(status) {
+            $("#checkboxes input").each(function () {
+
+                // Set the checked status of each to match the
+                // checked status of the check all checkbox:
+                $(this).prop("checked", status);
+            });
+        }
+
+        $(document).ready(function () {
+
+            //Set the default value of the global checkbox to true:
+            $("#checkall").prop('checked', false);
+
+            // Attach the call to toggleChecked to the
+            // click event of the global checkbox:
+            $("#checkall").click(function () {
+                var status = $("#checkall").prop('checked');
+                toggleChecked(status);
+            });
+        });
+    </script>
+}

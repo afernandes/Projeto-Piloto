@@ -14,6 +14,7 @@ using Semp.Module.Integrator.Data;
 namespace Semp.Module.Integrator.Controllers
 {
     [Authorize]
+    [Route("integrator/order")]
     public class OrderController : Controller
     {
         private readonly IMediaService _mediaService;
@@ -28,7 +29,7 @@ namespace Semp.Module.Integrator.Controllers
         }
 
 
-        [HttpGet("integrator/order-errors")]
+        [HttpGet("send-errors")]
         public async Task<IActionResult> OrderErrorList()
         {
             var user = await _workContext.GetCurrentUser();
@@ -53,5 +54,36 @@ namespace Semp.Module.Integrator.Controllers
 
             return View(model);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> SubmitSelected(OrderSelecionViewModel model)
+        {
+            // get the ids of the items selected:
+            var selectedIds = model.getSelectedIds();
+
+            // Use the ids to retrieve the records for the selected people
+            // from the database:
+            var selectedOrder = await _orderRepository.List().Where(x => selectedIds.Contains(x.Id)).ToListAsync();
+
+            // Process according to your requirements:
+            foreach (var order in selectedOrder)
+            {
+                System.Diagnostics.Debug.WriteLine(
+                    string.Format("{0} {1}", order.Id, order.PEDIDO_LEGADO));
+            }
+
+            // Redirect somewhere meaningful (probably to somewhere showing 
+            // the results of your processing):
+            return RedirectToAction("OrderErrorList");
+        }
+
+        [HttpGet("resend")]
+        public ActionResult Resend(Guid id)
+        {
+            _orderRepository.ResendOrder(id);
+
+            return RedirectToAction("OrderErrorList");
+        }
+
     }
 }

@@ -14,8 +14,16 @@ namespace Semp.Module.Integrator.Data
         }
         
         public IQueryable<OrderSendErrorView> List()
-        {
+        {            
             return Context.Query<OrderSendErrorView>().AsNoTracking();
         }
+
+        public void ResendOrder(Guid orderId)
+        {
+            Context.Database.ExecuteSqlCommand("update t set UPDATE_TIME_SAP = null FROM ORDER_ERROR AS t WHERE ID = {0}",orderId);
+
+            Context.SaveChanges();
+        }
+
     }
 }

@@ -1,8 +1,11 @@
 ﻿@model Semp.Module.Integrator.ViewModels.OrderDetailVm
 
 <tr>
-    <td style="text-align:center">
-        @Html.CheckBoxFor(model => model.Selected)
+    <td>
+        <div class="custom-control custom-checkbox">
+            @Html.CheckBoxFor(model => model.Selected, new { @class = "custom-control-input", style="display:none;" })
+            @Html.LabelFor(c => c.Selected,"", new { @class = "custom-control-label", style="display:block;" })
+        </div>
     </td>
     <td>
         @Html.DisplayFor(model => model.OrderType)
@@ -28,6 +31,6 @@
 
     <td>
         @Html.HiddenFor(model => model.Id)
-        @Html.ActionLink("Reenviar", "Reenviar", new { id = Model.Id }, new { @class = "btn btn-primary btn-xs" })
+        @Html.ActionLink(@Localizer["Resend"]?.Value ?? "Resend", "resend", new { id = Model.Id }, new { @class = "btn btn-primary btn-sm" })
     </td>
 </tr>
