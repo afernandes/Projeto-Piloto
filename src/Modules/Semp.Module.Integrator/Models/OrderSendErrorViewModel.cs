@@ -8,7 +8,7 @@ namespace Semp.Module.Integrator.Models
         {
         }
 
-        public Guid Id { get; set; }
+        public Guid? Id { get; set; }
 
         //public Guid ORDER_HEADER_ID { get; set; }
         public string ORDER_TYPE { get; set; }

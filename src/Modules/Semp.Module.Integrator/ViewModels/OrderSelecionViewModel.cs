@@ -15,7 +15,7 @@ namespace Semp.Module.Integrator.ViewModels
         }
 
 
-        public IEnumerable<Guid> getSelectedIds()
+        public IEnumerable<Guid?> getSelectedIds()
         {
             // Return an Enumerable containing the Id's of the selected people:
             return (from p in this.Order where p.Selected select p.Id).ToList();

@@ -2,10 +2,13 @@
 
 <tr>
     <td>
-        <div class="custom-control custom-checkbox">
-            @Html.CheckBoxFor(model => model.Selected, new { @class = "custom-control-input", style="display:none;" })
-            @Html.LabelFor(c => c.Selected,"", new { @class = "custom-control-label", style="display:block;" })
-        </div>
+        @if (Model.Id != null)
+        {
+            <div class="custom-control custom-checkbox">
+                @Html.CheckBoxFor(model => model.Selected, new { @class = "custom-control-input", style = "display:none;" })
+                @Html.LabelFor(c => c.Selected, "", new { @class = "custom-control-label", style = "display:block;" })
+            </div>
+        }
     </td>
     <td>
         @Html.DisplayFor(model => model.OrderType)
@@ -30,7 +33,10 @@
     </td>
 
     <td>
-        @Html.HiddenFor(model => model.Id)
-        @Html.ActionLink(@Localizer["Resend"]?.Value ?? "Resend", "resend", new { id = Model.Id }, new { @class = "btn btn-primary btn-sm" })
+        @if (Model.Id != null)
+        {
+            @Html.HiddenFor(model => model.Id)
+            @Html.ActionLink(@Localizer["Resend"]?.Value ?? "Resend", "resend", new { id = Model.Id }, new { @class = "btn btn-primary btn-sm" })
+        }
     </td>
 </tr>

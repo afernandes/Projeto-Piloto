@@ -38,6 +38,7 @@ paths.host.lib = paths.host.wwwroot + "lib/";
 var bower = {
     "bootstrap": "bootstrap/dist/**/*.{js,map,css,ttf,svg,woff,woff2,eot}",
     "bootstrap-ui-datetime-picker": "bootstrap-ui-datetime-picker/dist/*.*",
+    "bootstrap-social": "bootstrap-social/*.css",
     "i18n": "angular-i18n/angular-locale*.js",
     "bootstrap-star-rating": "bootstrap-star-rating/**/*.{js,css,gif}",
     "font-awesome": "components-font-awesome/**/*.{css,ttf,svg,woff,woff2,eot,otf}",
