@@ -8,7 +8,7 @@ namespace Semp.Module.Integrator.ViewModels
     {
         public OrderDetailVm(){ }
 
-        public Guid Id { get; set; }
+        public Guid? Id { get; set; }
         public string OrderType{ get; set; }
         public string OrderLegacy{ get; set; }
         public string Attendence { get; set; }

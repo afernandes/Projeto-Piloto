@@ -3,6 +3,11 @@
 @{
     ViewData["Title"] = Localizer["Manage your external logins"];
 }
+
+@section head{
+    <link simpl-append-version="true" rel="stylesheet" href="~/lib/bootstrap-social/bootstrap-social.css" />
+}
+
 <div class="row">
     <div class="col-md-3">
         @Html.Partial("_AccountMenu")
@@ -52,7 +57,24 @@
                     <p>
                         @foreach (var provider in Model.OtherLogins)
                         {
-                            <button type="submit" class="btn btn-default" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.Name</button>
+                            switch (provider.Name)
+                            {
+                                case "Facebook":
+                                    <button type="submit" class="btn btn-social btn-facebook" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">
+                                        <span class="fab fa-facebook-f"></span>
+                                        @provider.Name
+                                    </button>
+                                    break;
+                                case "Google":
+                                    <button type="submit" class="btn btn-social btn-google" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">
+                                        <span class="fab fa-google"></span>
+                                        @provider.Name
+                                    </button>
+                                    break;
+                                default:
+                                    <button type="submit" class="btn btn-default" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.Name</button>
+                                    break;
+                            }
                         }
                     </p>
                 </div>
