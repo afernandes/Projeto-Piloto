@@ -68,8 +68,7 @@ namespace Semp.Module.Integrator.Controllers
             // Process according to your requirements:
             foreach (var order in selectedOrder)
             {
-                System.Diagnostics.Debug.WriteLine(
-                    string.Format("{0} {1}", order.Id, order.PEDIDO_LEGADO));
+                Resend(order.Id);
             }
 
             // Redirect somewhere meaningful (probably to somewhere showing 

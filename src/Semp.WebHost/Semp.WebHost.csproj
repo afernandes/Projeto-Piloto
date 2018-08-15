@@ -29,6 +29,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Modules\Semp.Module.Cms\Semp.Module.Cms.csproj" />
     <ProjectReference Include="..\Modules\Semp.Module.Core\Semp.Module.Core.csproj" />
+    <ProjectReference Include="..\Modules\Semp.Module.Crm\Semp.Module.Crm.csproj" />
     <ProjectReference Include="..\Modules\Semp.Module.Localization\Semp.Module.Localization.csproj" />
     <ProjectReference Include="..\Semp.Infrastructure\Semp.Infrastructure.csproj" />
   </ItemGroup>
