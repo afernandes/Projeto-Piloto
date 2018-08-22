@@ -57,8 +57,8 @@ namespace Semp.Infrastructure.Web.SmartTable
             }
 
             var items = query
-                .Skip(param.Pagination.Start)
-                .Take(param.Pagination.Number)
+                //.Skip(param.Pagination.Start)
+                //.Take(param.Pagination.Number)
                 .ToList();
 
 

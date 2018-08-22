@@ -3,35 +3,39 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.Runtime.Loader;
+using System.Text;
 using System.Threading.Tasks;
+
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Autofac.Features.Variance;
+
 using MediatR;
+
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authentication.OAuth;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
+
 using Semp.Infrastructure;
 using Semp.Infrastructure.Data;
+using Semp.Infrastructure.Web;
+using Semp.Infrastructure.Web.ModelBinders;
 using Semp.Module.Core.Data;
 using Semp.Module.Core.Extensions;
 using Semp.Module.Core.Models;
-using Semp.Infrastructure.Web.ModelBinders;
-using Semp.Infrastructure.Web;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using System.Net;
 
 namespace Semp.WebHost.Extensions
 {
@@ -161,12 +165,13 @@ namespace Semp.WebHost.Extensions
                     options.Password.RequireNonAlphanumeric = false;
                     options.Password.RequireUppercase = false;
                     options.Password.RequireLowercase = false;
-                    options.Password.RequiredUniqueChars = 0;
+                    options.Password.RequiredUniqueChars = 0;                       
                 })
                 .AddRoleStore<SimplRoleStore>()
                 .AddUserStore<SimplUserStore>()
                 .AddDefaultTokenProviders();
 
+            //IISDefaults.AuthenticationScheme
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie()
                 .AddFacebook(x =>

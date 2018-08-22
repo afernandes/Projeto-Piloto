@@ -8,6 +8,6 @@ namespace Semp.Module.Integrator.Data
     public interface IOrderRepository : IRepositoryQuery<OrderSendErrorView>
     {
         IQueryable<OrderSendErrorView> List();
-        void ResendOrder(Guid orderId);
+        void ResendOrder(Guid orderId, string userName);
     }
 }

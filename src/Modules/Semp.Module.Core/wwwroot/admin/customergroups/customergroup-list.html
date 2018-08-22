@@ -41,8 +41,8 @@
             <td class="text-center"><i ng-attr-class="{{customergroup.isActive && 'fa fa-circle' || 'fa fa-circle-o'}}"></i></td>
             <td>{{customergroup.createdOn | date:'medium' }}</td>
             <td>
-                <a ui-sref="customergroup-edit({id: customergroup.id})" title="Edit" class="btn btn-primary btn-xs"> <span class="icon ion-md-create"></span></a>
-                <button ng-click="vm.deleteCustomerGroup(customergroup)" class="btn btn-danger btn-xs delete"> <span class="icon ion-md-close"></span></button>
+                <a ui-sref="customergroup-edit({id: customergroup.id})" title="Edit" class="btn btn-primary btn-sm"> <span class="icon ion-md-create"></span></a>
+                <button ng-click="vm.deleteCustomerGroup(customergroup)" class="btn btn-danger btn-sm delete"> <span class="icon ion-md-close"></span></button>
             </td>
         </tr>
     </tbody>
