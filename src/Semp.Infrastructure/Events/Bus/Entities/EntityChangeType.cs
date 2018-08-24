@@ -1,4 +1,4 @@
-﻿namespace Semp.Module.Core.Events.Bus.Entities
+﻿namespace Semp.Infrastructure.Events.Bus.Entities
 {
     public enum EntityChangeType : byte
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Semp.Module.Core.Events.Bus.Entities
+namespace Semp.Infrastructure.Events.Bus.Entities
 {
     public class EntityChangeReport
     {

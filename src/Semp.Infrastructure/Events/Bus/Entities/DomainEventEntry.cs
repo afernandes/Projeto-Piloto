@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Semp.Module.Core.Events.Bus.Entities
+namespace Semp.Infrastructure.Events.Bus.Entities
 {
     [Serializable]
     public class DomainEventEntry

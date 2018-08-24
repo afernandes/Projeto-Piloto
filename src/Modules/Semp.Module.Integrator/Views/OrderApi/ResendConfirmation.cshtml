@@ -1,0 +1,21 @@
+﻿@model Semp.Module.Integrator.ViewModels.OrderDetailVm
+
+<div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title">@Localizer["Resend Order"]</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true"></span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <p>Confirma o reenvio do pedido @Model.OrderLegacy ?</p>
+    </div>
+    <div class="modal-footer">
+        @using (Html.BeginForm("Resend", "Order", FormMethod.Post, new { encType = "multipart/form-data", name = "resendForm" }))
+        {
+            @Html.HiddenFor(model => model.Id)        
+            <input type="submit" name="operation" id="submit" value="@Localizer["Resend"]" class="btn btn-primary" />
+        }        
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">@Localizer["Cancel"]</button>
+    </div>
+</div>

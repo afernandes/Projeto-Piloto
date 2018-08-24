@@ -33,14 +33,23 @@
     </td>
 
     <td>
+
         @if (Model.Id != null)
         {
-            @using (Html.BeginForm("Resend", "Order", FormMethod.Post, new { encType = "multipart/form-data", name = "resendForm" }))
-            {
-                @Html.HiddenFor(model => model.Id)                                
-                @* @Html.ActionLink(@Localizer["Resend"]?.Value ?? "Resend", "resend", new { id = Model.Id }, new { @class = "btn btn-primary btn-sm" }) *@
-                <input type="submit" name="operation" id="submit" value="@Localizer["Resend"]" class="btn btn-primary btn-sm" />
-            }
+            @Html.HiddenFor(model => model.Id)
+            <a href="javascript:void(0);" id="resend"
+                    data-id="@Model.Id"
+                    class="btn btn-primary btn-sm btn-resend-order">
+                @Localizer["Resend"]
+            </a>
+            @*
+                @using (Html.BeginForm("Resend", "Order", FormMethod.Post, new { encType = "multipart/form-data", name = "resendForm" }))
+                {
+                    @Html.HiddenFor(model => model.Id)
+                    @* @Html.ActionLink(@Localizer["Resend"]?.Value ?? "Resend", "resend", new { id = Model.Id }, new { @class = "btn btn-primary btn-sm" })
+                    <input type="submit" name="operation" id="submit" data-id="@Model.Id" value="@Localizer["Resend"]" class="btn btn-primary btn-sm btn-resend-order" />
+                }
+            *@
         }
     </td>
 </tr>

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Semp.Module.Core.Events.Bus
+namespace Semp.Infrastructure.Events.Bus
 {
     // <summary>
     /// Defines interface for all Event data classes.

@@ -72,7 +72,7 @@ namespace Semp.Module.Integrator.Controllers
             return View(model);
         }
 
-        [HttpPost]
+        [HttpPost("submit-selected")]
         public async Task<IActionResult> SubmitSelected(OrderSelecionViewModel model)
         {
             // get the ids of the items selected:
@@ -93,9 +93,10 @@ namespace Semp.Module.Integrator.Controllers
 
             // Redirect somewhere meaningful (probably to somewhere showing 
             // the results of your processing):
-            return RedirectToAction("OrderErrorList");
+            return RedirectToAction("send-errors");
         }
 
+        
         [HttpPost("resend")]
         public async Task<IActionResult> Resend(Guid id)
         {
@@ -105,7 +106,7 @@ namespace Semp.Module.Integrator.Controllers
 
             _orderRepository.ResendOrder(id, userName);
 
-            return RedirectToAction("OrderErrorList");
+            return RedirectToAction("send-errors","/integrator/order");
         }
 
     }

@@ -11,22 +11,48 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Semp.Infrastructure;
 using Semp.Infrastructure.Data;
 using Semp.Infrastructure.Models;
-using Semp.Module.Core.Events.Bus.Entities;
+using Semp.Infrastructure.Events.Bus.Entities;
 using Semp.Module.Core.Models;
+using Semp.Module.Core.Extensions;
+using Semp.Infrastructure.Collections.Extensions;
 
 namespace Semp.Module.Core.Data
 {
     public class SimplDbContext : IdentityDbContext<User, Role, long, IdentityUserClaim<long>, UserRole, IdentityUserLogin<long>, IdentityRoleClaim<long>, IdentityUserToken<long>>
     {
+        /// <summary>
+        /// Reference to GUID generator.
+        /// </summary>
+        public IGuidGenerator GuidGenerator { get; set; }
 
         //protected virtual bool IsSoftDeleteFilterEnabled => CurrentUnitOfWorkProvider?.Current?.IsFilterEnabled(AbpDataFilters.SoftDelete) == true;
         protected virtual bool IsSoftDeleteFilterEnabled => true;
 
         private static MethodInfo ConfigureGlobalFiltersMethodInfo = typeof(SimplDbContext).GetMethod(nameof(ConfigureGlobalFilters), BindingFlags.Instance | BindingFlags.NonPublic);
 
-        public SimplDbContext(DbContextOptions options) : base(options)
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        public SimplDbContext(DbContextOptions options) 
+            : base(options)
         {
+            InitializeDbContext();
         }
+
+        private void InitializeDbContext()
+        {
+            SetNullsForInjectedProperties();
+        }
+
+        private void SetNullsForInjectedProperties()
+        {
+            //Logger = NullLogger.Instance;
+            //AbpSession = NullAbpSession.Instance;
+            //EntityChangeEventHelper = NullEntityChangeEventHelper.Instance;
+            GuidGenerator = SequentialGuidGenerator.Instance;
+            //EventBus = NullEventBus.Instance;
+        }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -245,17 +271,91 @@ namespace Semp.Module.Core.Data
             switch (entry.State)
             {
                 case EntityState.Added:
-                    //ApplyAbpConceptsForAddedEntity(entry, userId, changeReport);
+                    ApplyAbpConceptsForAddedEntity(entry, userId, changeReport);
                     break;
                 case EntityState.Modified:
-                    //ApplyAbpConceptsForModifiedEntity(entry, userId, changeReport);
+                    ApplyAbpConceptsForModifiedEntity(entry, userId, changeReport);
                     break;
                 case EntityState.Deleted:
-                    //ApplyAbpConceptsForDeletedEntity(entry, userId, changeReport);
+                    ApplyAbpConceptsForDeletedEntity(entry, userId, changeReport);
                     break;
             }
 
-            //AddDomainEvents(changeReport.DomainEvents, entry.Entity);
+            AddDomainEvents(changeReport.DomainEvents, entry.Entity);
+        }
+
+        protected virtual void ApplyAbpConceptsForAddedEntity(EntityEntry entry, long? userId, EntityChangeReport changeReport)
+        {
+            CheckAndSetId(entry);
+            //CheckAndSetMustHaveTenantIdProperty(entry.Entity);
+            //CheckAndSetMayHaveTenantIdProperty(entry.Entity);
+            //SetCreationAuditProperties(entry.Entity, userId);
+            changeReport.ChangedEntities.Add(new EntityChangeEntry(entry.Entity, EntityChangeType.Created));
+        }
+
+        protected virtual void ApplyAbpConceptsForModifiedEntity(EntityEntry entry, long? userId, EntityChangeReport changeReport)
+        {
+            //SetModificationAuditProperties(entry.Entity, userId);
+            if (entry.Entity is ISoftDelete && entry.Entity.As<ISoftDelete>().IsDeleted)
+            {
+                //SetDeletionAuditProperties(entry.Entity, userId);
+                changeReport.ChangedEntities.Add(new EntityChangeEntry(entry.Entity, EntityChangeType.Deleted));
+            }
+            else
+            {
+                changeReport.ChangedEntities.Add(new EntityChangeEntry(entry.Entity, EntityChangeType.Updated));
+            }
+        }
+
+        protected virtual void ApplyAbpConceptsForDeletedEntity(EntityEntry entry, long? userId, EntityChangeReport changeReport)
+        {
+            CancelDeletionForSoftDelete(entry);
+            //SetDeletionAuditProperties(entry.Entity, userId);
+            changeReport.ChangedEntities.Add(new EntityChangeEntry(entry.Entity, EntityChangeType.Deleted));
+        }
+
+        protected virtual void AddDomainEvents(List<DomainEventEntry> domainEvents, object entityAsObj)
+        {
+            var generatesDomainEventsEntity = entityAsObj as IGeneratesDomainEvents;
+            if (generatesDomainEventsEntity == null)
+            {
+                return;
+            }
+
+            if (generatesDomainEventsEntity.DomainEvents.IsNullOrEmpty())
+            {
+                return;
+            }
+
+            domainEvents.AddRange(generatesDomainEventsEntity.DomainEvents.Select(eventData => new DomainEventEntry(entityAsObj, eventData)));
+            generatesDomainEventsEntity.DomainEvents.Clear();
+        }
+
+        protected virtual void CheckAndSetId(EntityEntry entry)
+        {
+            //Set GUID Ids
+            var entity = entry.Entity as IEntity<Guid>;
+            if (entity != null && entity.Id == Guid.Empty)
+            {
+                var idPropertyEntry = entry.Property("Id");
+
+                if (idPropertyEntry != null && idPropertyEntry.Metadata.ValueGenerated == ValueGenerated.Never)
+                {
+                    entity.Id = GuidGenerator.Create();
+                }
+            }
+        }
+
+        protected virtual void CancelDeletionForSoftDelete(EntityEntry entry)
+        {
+            if (!(entry.Entity is ISoftDelete))
+            {
+                return;
+            }
+
+            entry.Reload();
+            entry.State = EntityState.Modified;
+            entry.Entity.As<ISoftDelete>().IsDeleted = true;
         }
 
 

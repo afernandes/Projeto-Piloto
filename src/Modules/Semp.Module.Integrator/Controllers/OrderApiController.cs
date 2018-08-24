@@ -11,6 +11,7 @@ using Semp.Infrastructure.Web.SmartTable;
 using Semp.Module.Integrator.Models;
 using Semp.Module.Integrator.ViewModels;
 using Semp.Module.Core.Extensions;
+using Semp.Module.Integrator.Data;
 //using Semp.Module.Integrator.Events;
 
 namespace Semp.Module.Integrator.Controllers
@@ -19,12 +20,18 @@ namespace Semp.Module.Integrator.Controllers
     [Route("api/integrator")]
     public class OrderApiController : Controller
     {
-        private readonly IRepositoryQuery<OrderSendErrorView> _orderRepository;
+        private readonly IRepositoryQuery<OrderSendErrorView> _orderQueryRepository;
+        private readonly IOrderRepository _orderRepository;
         private readonly IWorkContext _workContext;
         private readonly IMediator _mediator;
 
-        public OrderApiController(IRepositoryQuery<OrderSendErrorView> orderRepository, IWorkContext workContext, IMediator mediator)
+        public OrderApiController(
+            IRepositoryQuery<OrderSendErrorView> orderQueryRepository, 
+            IOrderRepository orderRepository,
+            IWorkContext workContext, 
+            IMediator mediator)
         {
+            _orderQueryRepository = orderQueryRepository;
             _orderRepository = orderRepository;
             _workContext = workContext;
             _mediator = mediator;
@@ -38,7 +45,7 @@ namespace Semp.Module.Integrator.Controllers
                 numRecords = 5;
             }
 
-            var query = _orderRepository.Query();
+            var query = _orderQueryRepository.Query();
 
 
             var currentUser = await _workContext.GetCurrentUser();
@@ -56,7 +63,7 @@ namespace Semp.Module.Integrator.Controllers
         [HttpPost("grid")]
         public async Task<ActionResult> List([FromBody] SmartTableParam param)
         {
-            IQueryable<OrderSendErrorView> query = _orderRepository
+            IQueryable<OrderSendErrorView> query = _orderQueryRepository
                 .Query();
 
             var currentUser = await _workContext.GetCurrentUser();
@@ -131,7 +138,7 @@ namespace Semp.Module.Integrator.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(Guid id)
         {
-            var order = _orderRepository
+            var order = _orderQueryRepository
                 .Query()
                 .FirstOrDefault(x => x.Id == id);
 
@@ -163,10 +170,36 @@ namespace Semp.Module.Integrator.Controllers
             return Json(model);
         }
 
+        [HttpPost("order/resend-confirmation/{id}")]
+        public async Task<IActionResult> ResendConfirmation(Guid id)
+        {
+            var selectedOrder = await _orderRepository
+                .List()
+                .Where(x => x.Id == id)
+                .Select(x => new OrderDetailVm
+                {
+                    Id = x.Id,
+                    OrderType = x.ORDER_TYPE,
+                    OrderLegacy = x.PEDIDO_LEGADO,
+                    Attendence = x.LOTE_ATENDIMENTO,
+                    UpdateTimeSap = x.UPDATE_TIME_SAP,
+                    Error = x.ERRO,
+                    DocumentNumber = x.CNPJ,
+                    ClientName = x.Cliente,
+                    Selected = false
+                })
+                .FirstOrDefaultAsync();
+
+            if(selectedOrder == null)
+                return BadRequest(new { error = "Pedido não encontrado." });
+
+            return PartialView(selectedOrder);
+        }
+
         [HttpPost("change-order-status/{id}")]
         public async Task<IActionResult> ResendStatus(Guid id)
         {
-            var order = _orderRepository.Query().FirstOrDefault(x => x.Id == id);
+            var order = _orderQueryRepository.Query().FirstOrDefault(x => x.Id == id);
             if (order == null)
             {
                 return NotFound();
@@ -182,7 +215,7 @@ namespace Semp.Module.Integrator.Controllers
             {
                 var oldStatus = order.OrderStatus;
                 order.OrderStatus = (OrderStatus)model.StatusId;
-                await _orderRepository.SaveChangesAsync();
+                await _orderQueryRepository.SaveChangesAsync();
 
                 var orderStatusChanged = new OrderChanged
                 {
