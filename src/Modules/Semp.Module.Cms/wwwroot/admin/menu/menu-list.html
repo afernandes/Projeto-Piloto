@@ -26,8 +26,8 @@
                         <td>{{menu.isSystem}}</td>
                         <td class="text-center"><i ng-attr-class="{{menu.isPublished && 'fa fa-circle' || 'far fa-circle'}}"></i></td>
                         <td>
-                            <a ui-sref="menus-edit({id: menu.id})" title="Edit" class="btn btn-primary btn-xs"> <span class="icon ion-md-create"></span></a>
-                            <button ng-click="vm.deleteMenu(menu)" class="btn btn-danger btn-xs delete"> <span class="icon ion-md-close"></span></button>
+                            <a ui-sref="menus-edit({id: menu.id})" title="Edit" class="btn btn-primary btn-sm"> <span class="icon ion-md-create"></span></a>
+                            <button ng-click="vm.deleteMenu(menu)" class="btn btn-danger btn-sm delete"> <span class="icon ion-md-close"></span></button>
                         </td>
                     </tr>
                 </tbody>

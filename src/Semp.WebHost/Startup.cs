@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Razor;
+using Microsoft.AspNetCore.Server.IISIntegration;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
@@ -41,6 +42,11 @@ namespace Semp.WebHost
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            /*services.ConfigureOptions(options =>
+            {
+                options.AutomaticAuthentication = true;
+            });*/
+
             services.AddCustomizedDataStore(_configuration);
             services.AddCustomizedIdentity(_configuration);
             services.AddHttpClient();
@@ -67,7 +73,7 @@ namespace Semp.WebHost
                 args.SetObserved();
             });
 
-            return  services.Build(_configuration, _hostingEnvironment);
+            return services.Build(_configuration, _hostingEnvironment);
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

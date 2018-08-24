@@ -26,8 +26,8 @@
                         <td>{{page.slug}}</td>
                         <td class="text-center"><i ng-attr-class="{{page.isPublished && 'fa fa-circle' || 'far fa-circle'}}"></i></td>
                         <td>
-                            <a ui-sref="page-edit({id: page.id})" title="Edit" class="btn btn-primary btn-xs"> <i class="icon ion-md-create"></i></a>
-                            <button ng-click="vm.deletePage(page)" class="btn btn-danger btn-xs delete"> <i class="icon ion-md-close"></i></button>
+                            <a ui-sref="page-edit({id: page.id})" title="Edit" class="btn btn-primary btn-sm"> <i class="icon ion-md-create"></i></a>
+                            <button ng-click="vm.deletePage(page)" class="btn btn-danger btn-sm delete"> <i class="icon ion-md-close"></i></button>
                         </td>
                     </tr>
                 </tbody>

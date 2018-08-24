@@ -9,8 +9,11 @@ namespace Semp.Module.Integrator.Data
 {
     public class OrderRepository : RepositoryQuery<OrderSendErrorView>, IOrderRepository
     {
-        public OrderRepository(SempDbContext context) : base(context)
+        private readonly SimplDbContext _integratorContext;
+
+        public OrderRepository(SempDbContext context, SimplDbContext integratorContext) : base(context)
         {
+            _integratorContext = integratorContext;
         }
         
         public IQueryable<OrderSendErrorView> List()
@@ -18,11 +21,10 @@ namespace Semp.Module.Integrator.Data
             return Context.Query<OrderSendErrorView>().AsNoTracking();
         }
 
-        public void ResendOrder(Guid orderId)
+        public void ResendOrder(Guid orderId, string userName)
         {
-            Context.Database.ExecuteSqlCommand("update t set UPDATE_TIME_SAP = null FROM ORDER_ERROR AS t WHERE ID = {0}",orderId);
-
-            Context.SaveChanges();
+            _integratorContext.Database.ExecuteSqlCommand("EXEC dbo.spc_IntegracaoReenviarPedido {0}, {1}",orderId, userName);
+            //_integratorContext.SaveChanges();
         }
 
     }

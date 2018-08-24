@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Semp.Module.Core.Models;
 using Semp.Infrastructure.Data;
+using System.Security.Claims;
+using System.Collections.Generic;
 
 namespace Semp.Module.Core.Extensions
 {
@@ -24,6 +26,17 @@ namespace Semp.Module.Core.Extensions
             _userManager = userManager;
             _httpContext = contextAccessor.HttpContext;
             _userRepository = userRepository;
+        }
+
+        public IList<string> GetRolesForCurrentUser()
+        {
+            var userIdentity = (ClaimsIdentity)_httpContext.User.Identity;
+            
+            var claims = userIdentity.Claims;
+            var roles = claims.Where(c => c.Type == ClaimTypes.Role)
+                              .Select(x => x.Value).ToList();
+
+            return roles;
         }
 
         public async Task<User> GetCurrentUser()

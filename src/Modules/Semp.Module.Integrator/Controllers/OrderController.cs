@@ -6,35 +6,52 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Semp.Infrastructure.Data;
 using Semp.Module.Core.Extensions;
+using Semp.Module.Core.Models;
 using Semp.Module.Core.Services;
-using Semp.Module.Integrator.Models;
-using Semp.Module.Integrator.ViewModels;
 using Semp.Module.Integrator.Data;
+using Semp.Module.Integrator.ViewModels;
 
 namespace Semp.Module.Integrator.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "dat,internet,dat troca")]
     [Route("integrator/order")]
     public class OrderController : Controller
     {
         private readonly IMediaService _mediaService;
         private readonly IOrderRepository _orderRepository;
         private readonly IWorkContext _workContext;
+        private readonly IRepository<User> _userRepository;
+        //private readonly IOrderService _orderService;
 
-        public OrderController(IOrderRepository orderRepository, IWorkContext workContext, IMediaService mediaService)
+        public OrderController(
+            IOrderRepository orderRepository,
+            IWorkContext workContext,
+            IMediaService mediaService
+            //IRepository<User> userRepository
+            /*,IOrderService orderService*/)
         {
             _orderRepository = orderRepository;
             _workContext = workContext;
             _mediaService = mediaService;
+            //_userRepository = userRepository;
+            //_orderService = orderService;
         }
 
 
         [HttpGet("send-errors")]
         public async Task<IActionResult> OrderErrorList()
         {
-            var user = await _workContext.GetCurrentUser();
+            //var user = await _workContext.GetCurrentUser();
+            /*var rolesNames = _userRepository.Query()
+                .Where(x => x.UserGuid == user.UserGuid)
+                .Include(x => x.Roles)
+                    .ThenInclude(x => x.Role)
+                .Select(x => x.Roles.SelectMany(y => y.Role.Name)).ToList();*/
 
-            var orders = await _orderRepository.List()
+            var rolesNames = _workContext.GetRolesForCurrentUser();
+
+            var orders = (await _orderRepository.List().ToListAsync())
+                .Where(x => rolesNames.Contains(x.ORDER_TYPE, StringComparer.InvariantCultureIgnoreCase))
                 .Select(x => new OrderDetailVm
                 {
                     Id = x.Id,
@@ -47,7 +64,7 @@ namespace Semp.Module.Integrator.Controllers
                     ClientName = x.Cliente,
                     Selected = false
                 })
-                .OrderByDescending(x => x.UpdateTimeSap).ToListAsync();
+                .OrderByDescending(x => x.UpdateTimeSap);
 
             var model = new OrderSelecionViewModel();
             model.Order.AddRange(orders);
@@ -65,10 +82,13 @@ namespace Semp.Module.Integrator.Controllers
             // from the database:
             var selectedOrder = await _orderRepository.List().Where(x => selectedIds.Contains(x.Id)).ToListAsync();
 
+            var user = await _workContext.GetCurrentUser();
+            var userName = user.UserName;
+
             // Process according to your requirements:
-            foreach (var order in selectedOrder)
+            foreach (var orderId in selectedOrder.Where(x => x.Id.HasValue).Select(s => s.Id.Value))
             {
-                Resend(order.Id.Value);
+                _orderRepository.ResendOrder(orderId, userName);
             }
 
             // Redirect somewhere meaningful (probably to somewhere showing 
@@ -76,10 +96,14 @@ namespace Semp.Module.Integrator.Controllers
             return RedirectToAction("OrderErrorList");
         }
 
-        [HttpGet("resend")]
-        public ActionResult Resend(Guid id)
+        [HttpPost("resend")]
+        public async Task<IActionResult> Resend(Guid id)
         {
-            _orderRepository.ResendOrder(id);
+            var user = await _workContext.GetCurrentUser();
+
+            var userName = user.UserName;
+
+            _orderRepository.ResendOrder(id, userName);
 
             return RedirectToAction("OrderErrorList");
         }

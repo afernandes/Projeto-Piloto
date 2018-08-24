@@ -93,13 +93,13 @@
                                 <div class="tree-handle" ui-tree-handle>
                                     <i class="icon ion-md-menu align-middle"></i>
                                 </div>
-                                <a class="btn btn-success btn-xs align-self-center" ng-if="node.children && node.children.length > 0" data-nodrag ng-click="vm.toggle(this)">
+                                <a class="btn btn-success btn-sm align-self-center" ng-if="node.children && node.children.length > 0" data-nodrag ng-click="vm.toggle(this)">
                                     <i class="icon" ng-class="{ 'icon ion-md-arrow-forward text-white': collapsed, 'icon ion-md-arrow-down text-white': !collapsed }"></i>
                                 </a>
                                 <div class="tree-node-content flex-fill align-self-center m-1">
                                     {{node.name}}
                                 </div>
-                                <a class="btn btn-danger btn-xs mr-2 align-self-center" data-nodrag ng-click="vm.remove(this)">
+                                <a class="btn btn-danger btn-sm mr-2 align-self-center" data-nodrag ng-click="vm.remove(this)">
                                     <i class="icon ion-md-close text-white"></i>
                                 </a>
 
