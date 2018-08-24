@@ -3,7 +3,7 @@ using Semp.Infrastructure.Models;
 
 namespace Semp.Module.Core.Models
 {
-    public class Widget : EntityBaseWithTypedId<string>
+    public class Widget : Entity<string>
     {
         public Widget(string id)
         {

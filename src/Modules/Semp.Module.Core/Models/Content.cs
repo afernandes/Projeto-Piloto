@@ -3,7 +3,7 @@ using Semp.Infrastructure.Models;
 
 namespace Semp.Module.Core.Models
 {
-    public abstract class Content : EntityBase
+    public abstract class Content : Infrastructure.Models.Entity
     {
         private bool isDeleted;
 

@@ -4,7 +4,7 @@ using Semp.Module.Core.Models;
 
 namespace Semp.Module.Cms.Models
 {
-    public class MenuItem : EntityBase
+    public class MenuItem : Infrastructure.Models.Entity
     {
         public long? ParentId { get; set; }
 
@@ -18,7 +18,7 @@ namespace Semp.Module.Cms.Models
 
         public long? EntityId { get; set; }
 
-        public Entity Entity { get; set; }
+        public Core.Models.Entity Entity { get; set; }
 
         public string CustomLink { get; set; }
 

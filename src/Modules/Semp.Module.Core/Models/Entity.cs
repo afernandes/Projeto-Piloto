@@ -2,7 +2,7 @@
 
 namespace Semp.Module.Core.Models
 {
-    public class Entity : EntityBase
+    public class Entity : Infrastructure.Models.Entity
     {
         public string Slug { get; set; }
 

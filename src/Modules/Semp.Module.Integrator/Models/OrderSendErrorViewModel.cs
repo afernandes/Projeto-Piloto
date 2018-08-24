@@ -2,7 +2,7 @@
 
 namespace Semp.Module.Integrator.Models
 {
-    public class OrderSendErrorView //: IEntityWithTypedId<Guid> //: EntityBase
+    public class OrderSendErrorView //: IEntity<Guid> //: EntityBase
     {
         public OrderSendErrorView()
         {

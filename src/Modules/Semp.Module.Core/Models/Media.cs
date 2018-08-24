@@ -2,7 +2,7 @@
 
 namespace Semp.Module.Core.Models
 {
-    public class Media : EntityBase
+    public class Media : Infrastructure.Models.Entity
     {
         public string Caption { get; set; }
 

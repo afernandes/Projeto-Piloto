@@ -2,7 +2,7 @@
 
 namespace Semp.Module.Core.Models
 {
-    public class EntityType : EntityBaseWithTypedId<string>
+    public class EntityType : Entity<string>
     {
         public EntityType()
         {

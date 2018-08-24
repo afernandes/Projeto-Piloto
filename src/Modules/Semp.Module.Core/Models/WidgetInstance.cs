@@ -3,7 +3,7 @@ using Semp.Infrastructure.Models;
 
 namespace Semp.Module.Core.Models
 {
-    public class WidgetInstance : EntityBase
+    public class WidgetInstance : Infrastructure.Models.Entity
     {
         public WidgetInstance()
         {

@@ -3,7 +3,7 @@ using Semp.Infrastructure.Models;
 
 namespace Semp.Module.Localization.Models
 {
-    public class Culture : EntityBaseWithTypedId<string>
+    public class Culture : Entity<string>
     {
         public Culture(string id)
         {

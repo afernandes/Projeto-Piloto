@@ -2,7 +2,7 @@
 
 namespace Semp.Module.Core.Models
 {
-    public class WidgetZone : EntityBase
+    public class WidgetZone : Infrastructure.Models.Entity
     {
         public WidgetZone(long id)
         {

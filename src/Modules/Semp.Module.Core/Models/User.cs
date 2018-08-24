@@ -5,7 +5,7 @@ using Semp.Infrastructure.Models;
 
 namespace Semp.Module.Core.Models
 {
-    public class User : IdentityUser<long>, IEntityWithTypedId<long>
+    public class User : IdentityUser<long>, IEntity<long>
     {
         public User()
         {
@@ -38,6 +38,27 @@ namespace Semp.Module.Core.Models
         public string RefreshTokenHash { get; set; }
 
         public IList<UserRole> Roles { get; set; } = new List<UserRole>();
+
+        public bool IsTransient()
+        {
+            if (EqualityComparer<long>.Default.Equals(Id, default(long)))
+            {
+                return true;
+            }
+
+            //Workaround for EF Core since it sets int/long to min value when attaching to dbcontext
+            if (typeof(long) == typeof(int))
+            {
+                return Convert.ToInt32(Id) <= 0;
+            }
+
+            if (typeof(long) == typeof(long))
+            {
+                return Convert.ToInt64(Id) <= 0;
+            }
+
+            return false;
+        }
 
         //public IList<CustomerGroupUser> CustomerGroups { get; set; } = new List<CustomerGroupUser>();
     }

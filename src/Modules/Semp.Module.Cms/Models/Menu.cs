@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Semp.Module.Cms.Models
 {
-    public class Menu : EntityBase
+    public class Menu : Entity
     {
         public Menu()
         {

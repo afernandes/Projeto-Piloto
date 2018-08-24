@@ -2,7 +2,7 @@
 
 namespace Semp.Module.Localization.Models
 {
-    public class Resource : EntityBase
+    public class Resource : Entity
     {
         public string Key { get; set; }
 

@@ -7,7 +7,7 @@ using Semp.Infrastructure.Models;
 
 namespace Semp.Module.Core.Data
 {
-    public class RepositoryWithTypedId<T, TId> : IRepositoryWithTypedId<T, TId> where T : class, IEntityWithTypedId<TId>
+    public class RepositoryWithTypedId<T, TId> : IRepositoryWithTypedId<T, TId> where T : class, IEntity<TId>
     {
         public RepositoryWithTypedId(SimplDbContext context)
         {

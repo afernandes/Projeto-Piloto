@@ -68,7 +68,7 @@ namespace Semp.Module.Integrator.Controllers
             // Process according to your requirements:
             foreach (var order in selectedOrder)
             {
-                Resend(order.Id);
+                Resend(order.Id.Value);
             }
 
             // Redirect somewhere meaningful (probably to somewhere showing 

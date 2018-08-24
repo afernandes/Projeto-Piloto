@@ -1,4 +1,8 @@
-﻿namespace Semp.Infrastructure.Models
+﻿using System;
+using System.Collections.Generic;
+using System.Reflection;
+
+namespace Semp.Infrastructure.Models
 {
     /// <summary>
     ///     Provides a base class for your objects which will be persisted to the database.
@@ -6,9 +10,10 @@
     ///     entities.
     ///     Since nearly all of the entities you create will have a type of int Id, this
     ///     base class leverages this assumption.  If you want an entity with a type other
-    ///     than int, such as string, then use <see cref="EntityBaseWithTypedId{TId}" /> instead.
+    ///     than int, such as string, then use <see cref="Entity{TId}" /> instead.
     /// </summary>
-    public abstract class EntityBase : EntityBaseWithTypedId<long>
+    [Serializable]
+    public abstract class Entity : Entity<long>, IEntity
     {
     }
 }

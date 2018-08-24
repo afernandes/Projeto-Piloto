@@ -2,7 +2,7 @@
 
 namespace Semp.Module.Core.Models
 {
-    public class AppSetting : EntityBaseWithTypedId<string>
+    public class AppSetting : Entity<string>
     {
         public AppSetting(string id)
         {
