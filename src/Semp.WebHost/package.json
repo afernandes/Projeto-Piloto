@@ -16,17 +16,17 @@
     "gulp-min": "gulp min"
   },
   "dependencies": {
-    "@ng-bootstrap/ng-bootstrap": "^2.2.0"
+    "@ng-bootstrap/ng-bootstrap": "^2.2.2"
   },
   "devDependencies": {
     "bower": "^1.8.4",
-    "glob": "^7.1.2",
+    "glob": "^7.1.3",
     "gulp": "^3.9.1",
     "gulp-clean": "^0.3.2",
     "gulp-concat": "^2.6.1",
     "gulp-cssmin": "^0.2.0",
     "gulp-ignore": "^2.0.1",
-    "gulp-uglify": "^3.0.0",
+    "gulp-uglify": "^3.0.1",
     "rimraf": "^2.6.2",
     "yargs": "^6.6.0"
   },

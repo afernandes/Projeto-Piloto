@@ -23,7 +23,7 @@ var paths = {
     },
     dev: {
         modules: "../Modules/",
-        moduleBin: "/bin/" + buildConfigurationName + "/netcoreapp2.1/"
+        moduleBin: "/bin/" + buildConfigurationName + "/netcoreapp2.2/"
     }
 };
 

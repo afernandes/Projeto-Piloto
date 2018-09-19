@@ -9,7 +9,7 @@
         /// <summary>
         /// Unique identifier for this entity.
         /// </summary>
-        TPrimaryKey Id { get; }
+        TPrimaryKey Id { get; set; }
 
         /// <summary>
         /// Checks if this entity is transient (not persisted to database and it has not an <see cref="Id"/>).
