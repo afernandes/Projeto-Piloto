@@ -28,7 +28,8 @@
     "gulp-ignore": "^2.0.1",
     "gulp-uglify": "^3.0.1",
     "rimraf": "^2.6.2",
-    "yargs": "^6.6.0"
+    "yargs": "^6.6.0",
+    "lodash": "^4.17.11"
   },
   "engines": {
     "node": "^8.9.3"

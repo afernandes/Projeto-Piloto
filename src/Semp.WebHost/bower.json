@@ -27,7 +27,8 @@
     "jquery": "3.2.1",
     "popper.js": "v1.14.4",
     "bootstrap-social": "5.1.1",
-    "font-awesome": "5.2.0"
+    "font-awesome": "5.2.0",
+    "lodash": "4.17.11"
   },
   "resolutions": {
     "angular": ">1.2.0",

@@ -56,12 +56,12 @@
                 </button>
             <div class="collapse navbar-collapse" id="navbarMain">
                 @* @await Component.InvokeAsync("CategoryMenu") *@
-                <vc:menu menu-name="Menu Superior Principal" view-name="TopBar"></vc:menu>
+                @*<vc:menu menu-name="Menu Superior Principal" view-name="TopBar"></vc:menu> *@
             </div>
         </div>
     </div>
     <partial name="_CookieConsentPartial" />
-    <main class="container body-content">
+    <main class="container body-content clearfix">
         @RenderBody()
     </main>
     <footer class="footer">
