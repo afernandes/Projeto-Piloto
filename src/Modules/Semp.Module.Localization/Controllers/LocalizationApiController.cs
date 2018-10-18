@@ -14,7 +14,7 @@ namespace Semp.Module.Localization.Controllers
     [Route("api/localization")]
     public class LocalizationApiController : Controller
     {
-        private const string STANDARD_CULTURE_ID = "pt-BR";
+        private const string STANDARD_CULTURE_ID = "en-US";
         private readonly IStringLocalizer _localizer;
         private readonly IRepository<Resource> _resourceRepository;
         private readonly IRepositoryWithTypedId<Culture, string> _cultureRepository;

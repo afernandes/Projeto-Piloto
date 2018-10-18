@@ -23,7 +23,7 @@ var paths = {
     },
     dev: {
         modules: "../Modules/",
-        moduleBin: "/bin/" + buildConfigurationName + "/netcoreapp2.2/"
+        moduleBin: "/bin/" + buildConfigurationName + "/netcoreapp2.1/"
     }
 };
 
@@ -44,7 +44,7 @@ var bower = {
     "font-awesome": "components-font-awesome/**/*.{css,ttf,svg,woff,woff2,eot,otf}",
     "jquery": "jquery/dist/jquery*.{js,map}",
     "jquery-validation": "jquery-validation/dist/*.js",
-    "jquery-validation-unobtrusive": "jquery-validation-unobtrusive/*.js",
+    "jquery-validation-unobtrusive": "jquery-validation-unobtrusive/src/*.js",
     "nouislider": "nouislider/distribute/*.{js,css}",
     "wnumb": "wnumb/wNumb.js",
     "angular": "angular/angular.js",

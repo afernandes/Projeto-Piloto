@@ -44,9 +44,9 @@
                 vm.roles = result.data;
             });
 
-            userService.getCustomerGroups().then(function (result) {
+            /*userService.getCustomerGroups().then(function (result) {
                 vm.getCustomerGroups = result.data;
-            });
+            });*/
         }
 
         init();

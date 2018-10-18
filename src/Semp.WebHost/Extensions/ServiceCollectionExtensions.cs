@@ -174,7 +174,7 @@ namespace Semp.WebHost.Extensions
             //IISDefaults.AuthenticationScheme
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie()
-                .AddFacebook(x =>
+                /*.AddFacebook(x =>
                 {
                     x.AppId = "1716532045292977";
                     x.AppSecret = "dfece01ae919b7b8af23f962a1f87f95";
@@ -192,7 +192,7 @@ namespace Semp.WebHost.Extensions
                     {
                         OnRemoteFailure = ctx => HandleRemoteLoginFailure(ctx)
                     };
-                })
+                })*/
                 .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
                 {
                     options.TokenValidationParameters = new TokenValidationParameters
@@ -238,7 +238,11 @@ namespace Semp.WebHost.Extensions
         {
             services.AddDbContextPool<SimplDbContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
-                    b => b.MigrationsAssembly("Semp.WebHost")));
+                    b =>
+                    {
+                        b.MigrationsAssembly("Semp.WebHost");
+                        b.MigrationsHistoryTable("__EFMigrationsHistoryWebIntegrator");
+                    }));
 
             services.AddDbContextPool<SempDbContext>(options =>
             {

@@ -18,6 +18,7 @@ namespace Semp.Module.Integrator.Models
         public string ERRO { get; set; }
         public string CNPJ { get; set; }
         public string Cliente { get; set; }
-       
+        public string REGRA_LIBERACAO { get; set; }
+
     }
 }

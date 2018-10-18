@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+
 using Semp.Infrastructure.Data;
 using Semp.Infrastructure.Web;
 using Semp.Module.Cms.Models;
 using Semp.Module.Cms.ViewModels;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Semp.Module.Cms.Components
 {
@@ -44,20 +45,26 @@ namespace Semp.Module.Cms.Components
 
         public async Task<IViewComponentResult> InvokeAsync(string menuName, string viewName = "Default")
         {
-            var menu = await _menuRepository.Query().Include(x => x.MenuItems).ThenInclude(m => m.Entity).FirstOrDefaultAsync(x => x.Name == menuName);
+            var menu = await _menuRepository.Query()
+                                            .Include(x => x.MenuItems)
+                                            .ThenInclude(m => m.Entity)
+                                            .FirstOrDefaultAsync(x => x.Name == menuName);
             if (menu == null)
             {
                 throw new ArgumentException($"Cannot found menu item name {menuName}");
             }
 
             var menuItemVms = new List<MenuItemVm>();
-            var menuItems = menu.MenuItems.Where(x => !x.ParentId.HasValue).OrderBy(x => x.DisplayOrder);
+            var menuItems = menu.MenuItems.Where(x => !x.ParentId.HasValue)
+                                          .OrderBy(x => x.DisplayOrder);
             foreach (var item in menuItems)
             {
                 var menuItemVm = Map(item);
                 menuItemVms.Add(menuItemVm);
             }
-           
+
+            if (string.IsNullOrWhiteSpace(viewName))
+                return View(this.GetViewPath("Default"), menuItemVms);
             return View(this.GetViewPath(viewName), menuItemVms);
         }
 

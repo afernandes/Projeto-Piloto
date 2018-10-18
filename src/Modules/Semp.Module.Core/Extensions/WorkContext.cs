@@ -66,7 +66,7 @@ namespace Semp.Module.Core.Extensions
             }
 
             userGuid = Guid.NewGuid();
-            var dummyEmail = string.Format("{0}@guest.Semp.com", userGuid);
+            var dummyEmail = string.Format("{0}@guest.semptcl.com.br", userGuid);
             _currentUser = new User
             {
                 FullName = "Guest",

@@ -14,6 +14,7 @@ using Semp.Infrastructure.Data;
 using Semp.Module.Localization.Models;
 using Semp.Infrastructure;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace Semp.WebHost.Extensions
 {
@@ -115,7 +116,16 @@ namespace Semp.WebHost.Extensions
             {
                 DefaultRequestCulture = new RequestCulture(defaultCulture, defaultCulture),
                 SupportedCultures = supportedCultures,
-                SupportedUICultures = supportedCultures
+                SupportedUICultures = supportedCultures,
+                RequestCultureProviders = new List<IRequestCultureProvider>
+                {
+                    new CookieRequestCultureProvider
+                    {
+                        CookieName = CookieRequestCultureProvider.DefaultCookieName
+                    },
+                    new QueryStringRequestCultureProvider(),
+                    new AcceptLanguageHeaderRequestCultureProvider()
+                }
             });
             return app;
         }

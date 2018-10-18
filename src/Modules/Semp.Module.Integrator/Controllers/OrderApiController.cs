@@ -24,17 +24,20 @@ namespace Semp.Module.Integrator.Controllers
         private readonly IOrderRepository _orderRepository;
         private readonly IWorkContext _workContext;
         private readonly IMediator _mediator;
+        private readonly IRepository<PedidoLiberado> _pedidoLiberadoRepository;
 
         public OrderApiController(
             IRepositoryQuery<OrderSendErrorView> orderQueryRepository, 
             IOrderRepository orderRepository,
             IWorkContext workContext, 
-            IMediator mediator)
+            IMediator mediator,
+            IRepository<PedidoLiberado> pedidoLiberadoRepository)
         {
             _orderQueryRepository = orderQueryRepository;
             _orderRepository = orderRepository;
             _workContext = workContext;
             _mediator = mediator;
+            _pedidoLiberadoRepository = pedidoLiberadoRepository;
         }
 
         [HttpGet]
@@ -129,7 +132,8 @@ namespace Semp.Module.Integrator.Controllers
                 update_time_sap = order.UPDATE_TIME_SAP,
                 erro = order.ERRO,
                 cnpj = order.CNPJ,
-                cliente = order.Cliente
+                cliente = order.Cliente,
+                regra_liberacao = order.REGRA_LIBERACAO
             }).ToListAsync();
 
             return Json(orders);
@@ -162,7 +166,8 @@ namespace Semp.Module.Integrator.Controllers
                 update_time_sap = order.UPDATE_TIME_SAP,
                 erro = order.ERRO,
                 cnpj = order.CNPJ,
-                cliente = order.Cliente
+                cliente = order.Cliente,
+                regra_liberacao = order.REGRA_LIBERACAO
             };
 
             //await _mediator.Publish(new OrderDetailGot { OrderDetailVm = model });
@@ -186,6 +191,37 @@ namespace Semp.Module.Integrator.Controllers
                     Error = x.ERRO,
                     DocumentNumber = x.CNPJ,
                     ClientName = x.Cliente,
+                    OrderIssue = x.REGRA_LIBERACAO,
+                    Selected = false
+                })
+                .FirstOrDefaultAsync();
+
+            if(selectedOrder == null)
+                return BadRequest(new { error = "Pedido não encontrado." });
+
+            return PartialView(selectedOrder);
+        }
+
+        [HttpPost("order/release-confirmation")]
+        public async Task<IActionResult> ReleaseConfirmation(
+            [FromBody] ReleaseConfirmation input)
+        {
+            var selectedOrder = await _orderRepository
+                .List()
+                .Where(x => x.PEDIDO_LEGADO == input.OrderLegacy
+                    && x.ORDER_TYPE == input.OrderType
+                    && x.REGRA_LIBERACAO == input.OrderIssue)
+                .Select(x => new OrderDetailVm
+                {
+                    Id = x.Id,
+                    OrderType = x.ORDER_TYPE,
+                    OrderLegacy = x.PEDIDO_LEGADO,
+                    Attendence = x.LOTE_ATENDIMENTO,
+                    UpdateTimeSap = x.UPDATE_TIME_SAP,
+                    Error = x.ERRO,
+                    DocumentNumber = x.CNPJ,
+                    ClientName = x.Cliente,
+                    OrderIssue = x.REGRA_LIBERACAO,
                     Selected = false
                 })
                 .FirstOrDefaultAsync();

@@ -13,7 +13,11 @@ namespace Semp.Module.Localization.Controllers
             Response.Cookies.Append(
                 CookieRequestCultureProvider.DefaultCookieName,
                 CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
-                new CookieOptions { Expires = DateTime.UtcNow.AddYears(1) }
+                new CookieOptions
+                {
+                    Expires = DateTime.UtcNow.AddYears(1),
+                    Secure = false
+                }
             );
 
             return LocalRedirect(returnUrl);

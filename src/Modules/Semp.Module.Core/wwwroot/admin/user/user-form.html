@@ -11,10 +11,8 @@
         <div class="card-body">
 
             <form name="userForm" class="form-horizontal">
-                <div class="col-sm-offset-2 bg-danger" ng-show="vm.validationErrors">
-                    <ul>
-                        <li ng-repeat="error in vm.validationErrors">{{error}}</li>
-                    </ul>
+                <div ng-show="vm.validationErrors">
+                    <div class="alert alert-warning" role="alert" ng-repeat="error in vm.validationErrors">{{error}}</div>
                 </div>
                 <div class="form-group row">
                     <label class="col-sm-4 col-md-3 col-form-label">{{::vm.translate.get('FullName')}}</label>
@@ -39,31 +37,13 @@
                     <div class="col-sm">
                         <input name="description" ng-model="vm.user.phoneNumber" class="form-control" />
                     </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-sm-4 col-md-3 col-form-label">{{::vm.translate.get('Manager of Vendor')}}</label>
-                    <div class="col-sm">
-                        <select class="form-control" ng-model="vm.user.vendorId" ng-options="vendor.id as vendor.name for vendor in vm.vendors">
-                            <option value="">{{::vm.translate.get('Not Vendor')}}</option>
-                        </select>
-                    </div>
-                </div>
+                </div>                
                 <div class="form-group row">
                     <label class="col-sm-4 col-md-3 col-form-label">{{::vm.translate.get('Roles')}}</label>
                     <div class="col-sm">
                         <div class="checkbox" ng-repeat="role in vm.roles">
                             <label>
                                 <input type="checkbox" ng-checked="vm.user.roleIds.indexOf(role.id) > -1" ng-click="vm.toggleRoles(role.id)"> {{role.name}}
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-sm-4 col-md-3 col-form-label">{{::vm.translate.get('Customer Groups')}}</label>
-                    <div class="col-sm">
-                        <div class="checkbox" ng-repeat="customergroup in vm.customerGroups">
-                            <label>
-                                <input type="checkbox" ng-checked="vm.user.customerGroupIds.indexOf(customergroup.id) > -1" ng-click="vm.toggleCustomerGroups(customergroup.id)"> {{customergroup.name}}
                             </label>
                         </div>
                     </div>

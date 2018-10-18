@@ -9,6 +9,7 @@ using Semp.Module.Core.Extensions;
 using Semp.Module.Core.Models;
 using Semp.Module.Core.Services;
 using Semp.Module.Integrator.Data;
+using Semp.Module.Integrator.Models;
 using Semp.Module.Integrator.ViewModels;
 
 namespace Semp.Module.Integrator.Controllers
@@ -21,18 +22,21 @@ namespace Semp.Module.Integrator.Controllers
         private readonly IOrderRepository _orderRepository;
         private readonly IWorkContext _workContext;
         private readonly IRepository<User> _userRepository;
+        private readonly IRepository<PedidoLiberado> _pedidoLiberadoRepository;
         //private readonly IOrderService _orderService;
 
         public OrderController(
             IOrderRepository orderRepository,
             IWorkContext workContext,
-            IMediaService mediaService
+            IMediaService mediaService,
+            IRepository<PedidoLiberado> pedidoLiberadoRepository
             //IRepository<User> userRepository
             /*,IOrderService orderService*/)
         {
             _orderRepository = orderRepository;
             _workContext = workContext;
             _mediaService = mediaService;
+            _pedidoLiberadoRepository = pedidoLiberadoRepository;
             //_userRepository = userRepository;
             //_orderService = orderService;
         }
@@ -62,6 +66,7 @@ namespace Semp.Module.Integrator.Controllers
                     Error = x.ERRO,
                     DocumentNumber = x.CNPJ,
                     ClientName = x.Cliente,
+                    OrderIssue = x.REGRA_LIBERACAO,
                     Selected = false
                 })
                 .OrderByDescending(x => x.UpdateTimeSap);
@@ -93,7 +98,7 @@ namespace Semp.Module.Integrator.Controllers
 
             // Redirect somewhere meaningful (probably to somewhere showing 
             // the results of your processing):
-            return RedirectToAction("send-errors");
+            return RedirectToAction(nameof(OrderErrorList));
         }
 
         
@@ -106,7 +111,25 @@ namespace Semp.Module.Integrator.Controllers
 
             _orderRepository.ResendOrder(id, userName);
 
-            return RedirectToAction("send-errors","/integrator/order");
+            return RedirectToAction(nameof(OrderErrorList));
+        }
+
+        [HttpPost("release")]
+        public async Task<IActionResult> Release(string OrderLegacy, string OrderType, string OrderIssue)
+        {
+            var currentUser = await _workContext.GetCurrentUser();
+
+            var pedidoLiberado = new PedidoLiberado{
+                Pedido = OrderLegacy,
+                Tipo = OrderType,
+                Regra = OrderIssue,
+                LiberadoPor = currentUser
+            };
+
+            _pedidoLiberadoRepository.Add(pedidoLiberado);
+            await _pedidoLiberadoRepository.SaveChangesAsync();
+
+            return RedirectToAction(nameof(OrderErrorList));
         }
 
     }

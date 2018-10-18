@@ -83,9 +83,9 @@
                 });
             }
 
-            getVendors();
+            //getVendors();
             getRoles();
-            getCustomerGroups();
+            //getCustomerGroups();
         }
 
         init();

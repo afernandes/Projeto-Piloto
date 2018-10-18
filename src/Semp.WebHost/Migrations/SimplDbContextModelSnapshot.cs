@@ -15,7 +15,7 @@ namespace Semp.WebHost.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.0-rc1-32029")
+                .HasAnnotation("ProductVersion", "2.1.3-rtm-32065")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -471,6 +471,29 @@ namespace Semp.WebHost.Migrations
                     );
                 });
 
+            modelBuilder.Entity("Semp.Module.Integrator.Models.PedidoLiberado", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("LiberadoEm");
+
+                    b.Property<long?>("LiberadoPorId");
+
+                    b.Property<string>("Pedido");
+
+                    b.Property<string>("Regra");
+
+                    b.Property<string>("Tipo");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LiberadoPorId");
+
+                    b.ToTable("Integrator_PedidoLiberado");
+                });
+
             modelBuilder.Entity("Semp.Module.Localization.Models.Culture", b =>
                 {
                     b.Property<string>("Id")
@@ -602,6 +625,14 @@ namespace Semp.WebHost.Migrations
                     b.HasOne("Semp.Module.Core.Models.WidgetZone", "WidgetZone")
                         .WithMany()
                         .HasForeignKey("WidgetZoneId")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("Semp.Module.Integrator.Models.PedidoLiberado", b =>
+                {
+                    b.HasOne("Semp.Module.Core.Models.User", "LiberadoPor")
+                        .WithMany()
+                        .HasForeignKey("LiberadoPorId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 

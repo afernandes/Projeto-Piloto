@@ -1,0 +1,46 @@
+﻿@model Semp.Module.Integrator.ViewModels.OrderIssuesWidgetComponentVm
+
+@using Semp.Module.Core.Models
+@using Semp.Module.Core.Extensions
+
+@inject IWorkContext WorkContext
+@inject SignInManager<User> SignInManager
+
+@if (!SignInManager.IsSignedIn(User))
+{
+    <div class="d-flex align-items-center p-3 my-3 text-black-50 bg-warning rounded box-shadow">
+        <span class="mr-3 icon ion-md-alert h1"></span>
+        <div class="lh-100 flex-grow-1">
+            <h6 class="mb-0 text-black lh-100 ng-binding">@Localizer["You are not logged in!"]</h6>
+            <small>@Localizer["Please log in to continue."]</small>
+        </div>
+    </div>
+}
+else
+{
+    @if (Model.Items.Count > 0)
+    {
+        <div class="d-flex align-items-center p-3 my-3 text-black-50 bg-warning rounded box-shadow">
+            <span class="mr-3 icon ion-md-alert h1"></span>
+            <div class="lh-100 flex-grow-1">
+                <h6 class="mb-0 text-black lh-100 ng-binding">@Localizer["Orders that require your attention"]</h6>
+                <small>@Localizer["Orders rejected by SAP or requiring manual release"]</small>
+            </div>
+            <a class="btn btn-secondary ng-binding" href="/integrator/order/send-errors"><i class="icon ion-md-eye"></i> @Localizer["View"]</a>
+        </div>
+    }
+}
+
+<div class="card-columns">
+    @foreach (var item in Model.Items)
+    {
+        <div class="card text-center bg-light">
+            <div class="card-header">
+                <strong>@item.OrderType</strong>
+            </div>
+            <div class="card-body">
+                <h1 class="card-title text-danger">@item.Count</h1>
+            </div>
+        </div>
+    }
+</div>

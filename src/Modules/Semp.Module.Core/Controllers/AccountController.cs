@@ -129,7 +129,8 @@ namespace Semp.Module.Core.Controllers
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
                     await _emailSender.SendEmailAsync(model.Email, "Confirm your account",
-                        $"Please confirm your account by clicking this link: <a href='{callbackUrl}'>link</a>");
+
+                        $"Por favor, confirme sua conta clicando neste link: <a href='{callbackUrl}'>link</a>", true);
                     await _userManager.AddToRoleAsync(user, "customer");
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
@@ -294,7 +295,7 @@ namespace Semp.Module.Core.Controllers
                 var code = await _userManager.GeneratePasswordResetTokenAsync(user);
                 var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
                 await _emailSender.SendEmailAsync(model.Email, "Reset Password",
-                   $"Please reset your password by clicking here: <a href='{callbackUrl}'>link</a>");
+                   $"Por favor, redefina sua senha clicando aqui: <a href='{callbackUrl}'>link</a>", true);
                 return View("ForgotPasswordConfirmation");
             }
 

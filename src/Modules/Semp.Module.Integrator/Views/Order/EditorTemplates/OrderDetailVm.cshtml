@@ -51,5 +51,16 @@
                 }
             *@
         }
+        else
+        {
+            @Html.HiddenFor(model => model.Id)
+            <a href="javascript:void(0);" id="release"
+                    data-orderLegacy="@Model.OrderLegacy"
+                    data-orderType="@Model.OrderType"
+                    data-orderIssue="@Model.OrderIssue"
+                    class="btn btn-success btn-sm btn-release-order">
+                @Localizer["Release"]
+            </a>
+        }
     </td>
 </tr>
