@@ -61,5 +61,7 @@ namespace Semp.Module.Core.Models
         }
 
         //public IList<CustomerGroupUser> CustomerGroups { get; set; } = new List<CustomerGroupUser>();
+
+        public string Culture { get; set; }
     }
 }

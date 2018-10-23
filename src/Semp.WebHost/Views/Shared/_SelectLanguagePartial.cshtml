@@ -1,39 +1,37 @@
 ﻿@using Microsoft.AspNetCore.Localization
 @using Semp.Infrastructure
+@using Semp.Module.Core.Extensions
 
 @inject IViewLocalizer Localizer
+@inject IWorkContext WorkContext
 
 @{
-    var requestCulture = Context.Features.Get<IRequestCultureFeature>();
-    var availableCultures = GlobalConfiguration.SimpleCultures;
+    var uiCulture = Context.Features.Get<IRequestCultureFeature>().RequestCulture.UICulture.Name;
+    var selectedCulture = WorkContext.GetCurrentUser().Result.Culture;
 }
 
-@if (availableCultures.Count() > 1)
+@if (GlobalConfiguration.Cultures.Count() > 1)
 {
-<li class="nav-item dropdown">    
-    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        Language (@requestCulture.RequestCulture.UICulture.Name)
-    </a>    
-    <div class="dropdown-menu lang-selector" aria-labelledby="navbarDropdown">
-        @foreach (var lang in availableCultures)
+<li class="nav-item dropdown">
+    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
+        Language (@uiCulture)
+        <span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu lang-selector">
+        @foreach (var culture in GlobalConfiguration.Cultures)
         {
-            if (lang.Id == requestCulture.RequestCulture.UICulture.Name)
-            {
-                <a class="dropdown-item active" href="javascript:void(0)" data-value="@lang.Id">                    
-                    @lang.Name <i class="fas fa-check" aria-hidden="true"></i>                    
+            <li class="dropdown-item">
+                <a href="#" data-value="@culture.Id">@culture.Name
+                @if (culture.Id == uiCulture)
+                {
+                    <span class="fas fa-check" aria-hidden="true"></span>
+                }
                 </a>
-            }
-            else
-            {
-                <a class="dropdown-item" href="javascript:void(0)" data-value="@lang.Id">                    
-                    @lang.Name                    
-                </a>
-            }
+            </li>
         }
-    </div>
-    <form asp-controller="Localization" asp-action="SetLanguage" asp-route-returnUrl="@Context.Request.Path"
-          method="post" id="lang-form" role="form">
-        <input type="hidden" name="culture" value="@requestCulture.RequestCulture.UICulture.Name" />
+    </ul>
+    <form asp-area="Localization" asp-controller="Localization" asp-action="SetLanguage" asp-route-returnUrl="@Context.Request.Path" method="post" id="lang-form" role="form">
+        <input type="hidden" name="culture" value="@uiCulture" />
     </form>
 </li>
 }

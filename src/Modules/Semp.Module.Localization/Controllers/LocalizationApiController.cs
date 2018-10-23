@@ -5,9 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using Semp.Infrastructure.Data;
-using Semp.Module.Localization.Models;
 using Microsoft.AspNetCore.Authorization;
 using Semp.Module.Localization.ViewModel;
+using Semp.Infrastructure.Localization;
 
 namespace Semp.Module.Localization.Controllers
 {

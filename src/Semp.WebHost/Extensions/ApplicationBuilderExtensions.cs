@@ -1,20 +1,20 @@
 ﻿using System;
-using System.Globalization;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Localization;
-using Microsoft.Net.Http.Headers;
-using Semp.Module.Core.Extensions;
-using Microsoft.AspNetCore.Hosting;
+using System.Linq;
 using System.Security.Claims;
+
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
-using Semp.Infrastructure.Data;
-using Semp.Module.Localization.Models;
+using Microsoft.Net.Http.Headers;
+
 using Semp.Infrastructure;
-using System.Linq;
-using System.Collections.Generic;
+using Semp.Infrastructure.Data;
+using Semp.Infrastructure.Localization;
+using Semp.Module.Core.Extensions;
+using Semp.Module.Localization;
 
 namespace Semp.WebHost.Extensions
 {
@@ -99,7 +99,28 @@ namespace Semp.WebHost.Extensions
             return app;
         }
 
+
         public static IApplicationBuilder UseCustomizedRequestLocalization(this IApplicationBuilder app)
+        {
+            using (var scope = app.ApplicationServices.CreateScope())
+            {
+                var cultureRepository = scope.ServiceProvider.GetRequiredService<IRepositoryWithTypedId<Culture, string>>();
+                GlobalConfiguration.Cultures = cultureRepository.Query().ToList();
+            }
+
+            var supportedCultures = GlobalConfiguration.Cultures.Select(c => c.Id).ToArray();
+            app.UseRequestLocalization(options =>
+            options
+                .AddSupportedCultures(supportedCultures)
+                .AddSupportedUICultures(supportedCultures)
+                .SetDefaultCulture(GlobalConfiguration.DefaultCulture)
+                .RequestCultureProviders.Insert(0, new EfRequestCultureProvider())
+            );
+
+            return app;
+        }
+
+        /*public static IApplicationBuilder UseCustomizedRequestLocalizationBkp(this IApplicationBuilder app)
         {
             var cultureRepository = app.ApplicationServices.GetRequiredService<IRepositoryWithTypedId<Culture, string>>();
             var cultures = cultureRepository.Query().ToList();
@@ -119,15 +140,15 @@ namespace Semp.WebHost.Extensions
                 SupportedUICultures = supportedCultures,
                 RequestCultureProviders = new List<IRequestCultureProvider>
                 {
+                    //new AcceptLanguageHeaderRequestCultureProvider(),
                     new CookieRequestCultureProvider
                     {
                         CookieName = CookieRequestCultureProvider.DefaultCookieName
                     },
-                    new QueryStringRequestCultureProvider(),
-                    new AcceptLanguageHeaderRequestCultureProvider()
+                    new QueryStringRequestCultureProvider()
                 }
             });
             return app;
-        }
+        }*/
     }
 }

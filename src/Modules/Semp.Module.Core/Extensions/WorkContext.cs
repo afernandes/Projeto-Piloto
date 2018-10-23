@@ -8,6 +8,7 @@ using Semp.Module.Core.Models;
 using Semp.Infrastructure.Data;
 using System.Security.Claims;
 using System.Collections.Generic;
+using Semp.Infrastructure;
 
 namespace Semp.Module.Core.Extensions
 {
@@ -72,7 +73,8 @@ namespace Semp.Module.Core.Extensions
                 FullName = "Guest",
                 UserGuid = userGuid.Value,
                 Email = dummyEmail,
-                UserName = dummyEmail
+                UserName = dummyEmail,
+                Culture = GlobalConfiguration.DefaultCulture
             };
             var abc = await _userManager.CreateAsync(_currentUser, "1qazZAQ!");
             await _userManager.AddToRoleAsync(_currentUser, "guest");

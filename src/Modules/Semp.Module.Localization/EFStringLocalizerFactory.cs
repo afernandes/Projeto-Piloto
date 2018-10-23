@@ -4,7 +4,7 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using Semp.Infrastructure.Data;
-using Semp.Module.Localization.Models;
+using Semp.Infrastructure.Localization;
 
 namespace Semp.Module.Localization
 {

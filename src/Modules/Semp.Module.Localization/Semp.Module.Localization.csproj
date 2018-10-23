@@ -15,4 +15,10 @@
     <ProjectReference Include="..\Semp.Module.Core\Semp.Module.Core.csproj" />
   </ItemGroup>
 
+  
+
+  <ItemGroup>
+    <Folder Include="Models\" />
+  </ItemGroup>
+
 </Project>

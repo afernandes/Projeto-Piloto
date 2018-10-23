@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Semp.Infrastructure;
 using Semp.Infrastructure.Data;
-using Semp.Module.Localization.Models;
+using Semp.Infrastructure.Localization;
 
 namespace Semp.Module.Localization.Data
 {
@@ -9,8 +10,10 @@ namespace Semp.Module.Localization.Data
         public void Build(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Culture>().HasData(
-               new Culture("en-US") { Name = "English (US)", IsDefault = true }
+               new Culture(GlobalConfiguration.DefaultCulture) { Name = "English (US)" }
             );
+            modelBuilder.Entity<Culture>().ToTable("Localization_Culture");
+            modelBuilder.Entity<Resource>().ToTable("Localization_Resource");
         }
     }
 }

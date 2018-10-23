@@ -1,4 +1,5 @@
 ﻿using System;
+using AspNetCore.RouteAnalyzer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -12,6 +13,7 @@ using Semp.Infrastructure;
 using Semp.Infrastructure.ScheduledTasks;
 using Semp.Infrastructure.Web;
 using Semp.Module.Localization;
+using Semp.Module.Localization.Extensions;
 using Semp.WebHost.Extensions;
 
 namespace Semp.WebHost
@@ -54,10 +56,11 @@ namespace Semp.WebHost
             services.AddSingleton<IStringLocalizerFactory, EfStringLocalizerFactory>();
             services.AddCloudscribePagination();
 
-            services.Configure<RazorViewEngineOptions>(
-                options => { options.ViewLocationExpanders.Add(new ModuleViewLocationExpander()); });
+            services.AddCustomizedLocalization();
 
             services.AddCustomizedMvc(GlobalConfiguration.Modules);
+            services.Configure<RazorViewEngineOptions>(
+                options => { options.ViewLocationExpanders.Add(new ModuleViewLocationExpander()); });
 
             var sp = services.BuildServiceProvider();
             var moduleInitializers = sp.GetServices<IModuleInitializer>();
@@ -65,6 +68,8 @@ namespace Semp.WebHost
             {
                 moduleInitializer.ConfigureServices(services);
             }
+
+            services.AddRouteAnalyzer(); // Add
 
             services.AddScheduler((sender, args) =>
             {
@@ -95,11 +100,11 @@ namespace Semp.WebHost
                 context => !context.Request.Path.StartsWithSegments("/api"),
                 a => a.UseStatusCodePagesWithReExecute("/Home/ErrorWithCode/{0}")
             );
-
-            app.UseCustomizedRequestLocalization();
+            
             app.UseCustomizedStaticFiles(env);
             app.UseCookiePolicy();
             app.UseCustomizedIdentity();
+            app.UseCustomizedRequestLocalization();
             app.UseCustomizedMvc();
 
             var moduleInitializers = app.ApplicationServices.GetServices<IModuleInitializer>();

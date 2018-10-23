@@ -24,7 +24,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.5" />
-    <PackageReference Include="Twilio" Version="5.19.0" />
+    <PackageReference Include="Twilio" Version="5.20.1" />
     <PackageReference Include="Twilio.AspNet.Core" Version="5.9.7" />
   </ItemGroup>
 
