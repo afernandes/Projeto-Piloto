@@ -29,7 +29,7 @@
     "gulp-uglify": "^3.0.1",
     "rimraf": "^2.6.2",
     "yargs": "^6.6.0",
-    "lodash": "^4.17.11"
+    "lodash": "^4.17.21"
   },
   "engines": {
     "node": "^8.9.3"
