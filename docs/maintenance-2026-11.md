@@ -50,3 +50,7 @@ The .NET compatibility tests exercise the actual linked mediator implementation 
 The CI builds all projects, runs compatibility tests, and runs asset tests. It has read-only repository permissions and contains no deployment or publishing steps.
 
 The final npm audit reports zero known vulnerabilities across the 184-package asset graph. Gulp copies preserve binary encodings explicitly and flatten the `win-x64` build output into the module loader's expected `bin` directory; tests cover both RID and portable output and Debug/Release selection. Existing NuGet/runtime vulnerabilities require further maintenance and a supported-framework migration; they are not suppressed by this change.
+
+## Follow-up: unused email dependency
+
+After native Dependabot resumed, #214 proposed MailKit 4.18.2. Its transitive cryptography and encoding packages warn that they do not support `netcoreapp2.2`. The active email sender uses `System.Net.Mail`; MailKit and MimeKit occurred only in unused imports and a commented-out alternative implementation. Removing that unused package and dead example eliminates MailKit/MimeKit from the dependency graph without changing the active sender or connecting to SMTP. This supersedes #214; the solution build and compatibility tests validate the removal.
