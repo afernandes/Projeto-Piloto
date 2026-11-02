@@ -12,6 +12,9 @@
     <PackageReference Include="MediatR" Version="7.0.0" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.1.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.2.0" />
+    <PackageReference Include="ncrontab" Version="3.4.0" />
+    <PackageReference Include="Nito.AsyncEx" Version="5.1.2" />
     <Compile Include="../../src/Semp.Infrastructure/SequentialMediator.cs" Link="SequentialMediator.cs" />
+    <Compile Include="../../src/Semp.Infrastructure/Threading/AsyncHelper.cs" Link="AsyncHelper.cs" />
   </ItemGroup>
 </Project>
