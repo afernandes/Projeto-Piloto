@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using System.Collections.Generic;
+using System;
 using System.Threading.Tasks;
 
 namespace Semp.Infrastructure
@@ -10,11 +11,11 @@ namespace Semp.Infrastructure
         {
         }
 
-        protected async override Task PublishCore(IEnumerable<Task> allHandlers)
+        protected async override Task PublishCore(IEnumerable<Func<Task>> allHandlers)
         {
             foreach (var handler in allHandlers)
             {
-                await handler;
+                await handler().ConfigureAwait(false);
             }
         }
     }

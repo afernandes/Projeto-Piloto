@@ -1,15 +1,16 @@
-﻿/// <binding AfterBuild='copy-modules' />
+/// <binding AfterBuild='copy-modules' />
 "use strict";
 
 var gulp = require('gulp'),
-    clean = require('gulp-clean'),
     concat = require("gulp-concat"),
-    cssmin = require("gulp-cssmin"),
-    uglify = require("gulp-uglify"),
-    ignore = require('gulp-ignore'),
-    glob = require("glob"),
-    rimraf = require("rimraf"),
-    argv = require('yargs').argv;
+    cssmin = require("gulp-clean-css"),
+    fs = require('fs'),
+    path = require('path'),
+    argv = require('util').parseArgs({
+        options: { configurationName: { type: 'string', default: 'Debug' } },
+        strict: false, allowPositionals: true
+    }).values,
+    pipeline = require('stream').pipeline;
 
 var buildConfigurationName = argv.configurationName || 'Debug';
 
@@ -23,7 +24,7 @@ var paths = {
     },
     dev: {
         modules: "../Modules/",
-        moduleBin: "/bin/" + buildConfigurationName + "/netcoreapp2.1/"
+        moduleBin: "/bin/" + buildConfigurationName + "/netcoreapp2.2/"
     }
 };
 
@@ -72,7 +73,10 @@ function loadModules() {
     var moduleManifestPaths,
         modules = [];
 
-    moduleManifestPaths = glob.sync(paths.dev.modules + '*.*/module.json', {});
+    moduleManifestPaths = fs.readdirSync(paths.dev.modules, { withFileTypes: true })
+        .filter(function (entry) { return entry.isDirectory() && entry.name.includes('.'); })
+        .map(function (entry) { return path.resolve(paths.dev.modules, entry.name, 'module.json'); })
+        .filter(function (manifest) { return fs.existsSync(manifest); });
     moduleManifestPaths.forEach(function (moduleManifestPath) {
         var moduleManifest = require(moduleManifestPath);
         modules.push(moduleManifest);
@@ -81,63 +85,81 @@ function loadModules() {
     return modules;
 }
 
-gulp.task('clean-module', function () {
-    return gulp.src([paths.host.modules + '*', paths.host.wwwrootModules + '*'], { read: false })
-        .pipe(clean());
+gulp.task('clean-module', function (done) {
+    [paths.host.modules, paths.host.wwwrootModules].forEach(function (directory) {
+        fs.rmSync(directory, { recursive: true, force: true });
+    });
+    done();
 });
+
+function copyFiles(patterns, destination, options) {
+    return new Promise(function (resolve, reject) {
+        // Gulp 5 defaults to UTF-8; preserve DLLs, fonts and images byte-for-byte.
+        var streams = [gulp.src(patterns, Object.assign({ encoding: false }, options))];
+        streams.push(gulp.dest(destination));
+        streams.push(function (error) { if (error) reject(error); else resolve(); });
+        pipeline.apply(null, streams);
+    });
+}
 
 gulp.task('copy-static', function () {
+    var copies = [];
     modules.forEach(function (module) {
         console.log('copying static contents ' + paths.dev.modules + module.fullName);
-        gulp.src([paths.dev.modules + module.fullName + '/Views/**/*.*',
-        paths.dev.modules + module.fullName + '/module.json'], { base: module.fullName })
-            .pipe(gulp.dest(paths.host.modules + module.fullName));
-        gulp.src(paths.dev.modules + module.fullName + '/wwwroot/**/*.*')
-            .pipe(gulp.dest(paths.host.wwwrootModules + module.name));
+        copies.push(copyFiles([paths.dev.modules + module.fullName + '/Views/**/*.*',
+            paths.dev.modules + module.fullName + '/module.json'],
+            paths.host.modules + module.fullName, { base: paths.dev.modules + module.fullName }));
+        copies.push(copyFiles(paths.dev.modules + module.fullName + '/wwwroot/**/*.*',
+            paths.host.wwwrootModules + module.name));
     });
 
-    gulp.src(paths.dev.modules + 'Semp.Module.SampleData/SampleContent/**/*.*')
-        .pipe(gulp.dest(paths.host.modules + 'Semp.Module.SampleData/SampleContent'));
+    copies.push(copyFiles(paths.dev.modules + 'Semp.Module.SampleData/SampleContent/**/*.*',
+        paths.host.modules + 'Semp.Module.SampleData/SampleContent'));
+    return Promise.all(copies);
 });
 
-gulp.task('copy-modules', ['clean-module'], function () {
-    gulp.start(['copy-static']);
-
+gulp.task('copy-module-binaries', function () {
+    var copies = [];
     modules.forEach(function (module) {
         if (!module.isBundledWithHost) {
-            console.log('copying ' + paths.dev.modules + module.fullName + paths.dev.moduleBin);
-            gulp.src(paths.dev.modules + module.fullName + paths.dev.moduleBin + '**/*.*')
-                .pipe(gulp.dest(paths.host.modules + module.fullName + paths.host.moduleBin));
+            var output = paths.dev.modules + module.fullName + paths.dev.moduleBin;
+            if (fs.existsSync(output + 'win-x64/')) output += 'win-x64/';
+            console.log('copying ' + output);
+            copies.push(copyFiles(output + '**/*.*',
+                paths.host.modules + module.fullName + paths.host.moduleBin));
         }
     });
+    return Promise.all(copies);
 });
 
+gulp.task('clean-modules', gulp.series('clean-module'));
+gulp.task('copy-modules', gulp.series('clean-module', gulp.parallel('copy-static', 'copy-module-binaries')));
+
 gulp.task("clean:js", function (cb) {
-    rimraf(paths.host.concatJsDest, cb);
+    fs.rm(paths.host.concatJsDest, { force: true }, cb);
 });
 
 gulp.task("clean:css", function (cb) {
-    rimraf(paths.host.concatCssDest, cb);
+    fs.rm(paths.host.concatCssDest, { force: true }, cb);
 });
 
-gulp.task("clean:lib", function () {
+gulp.task("clean:lib", function (done) {
     for (var desDir in bower)
-        rimraf.sync(paths.host.lib + desDir);
+        fs.rmSync(paths.host.lib + desDir, { recursive: true, force: true });
+    done();
 });
 
-gulp.task("copy-lib", ["clean:lib"], function () {
-    var ignoreComponents = ["**/npm.js"];
-
+gulp.task("copy-lib", gulp.series("clean:lib", function () {
+    var copies = [];
     for (var desDir in bower)
-        gulp.src(paths.host.bower + bower[desDir])
-            .pipe(ignore.exclude(ignoreComponents))
-            .pipe(gulp.dest(paths.host.lib + desDir));
-});
+        copies.push(copyFiles([paths.host.bower + bower[desDir], '!' + paths.host.bower + '**/npm.js'],
+            paths.host.lib + desDir, { allowEmpty: true }));
+    return Promise.all(copies);
+}));
 
 gulp.task("min:js", function () {
     return gulp.src([paths.host.js, "!" + paths.host.minJs], { base: "." })
         .pipe(concat(paths.host.concatJsDest))
-        // .pipe(uglify())
         .pipe(gulp.dest("."));
 });
 
@@ -148,4 +170,4 @@ gulp.task("min:css", function () {
         .pipe(gulp.dest("."));
 });
 
-gulp.task("min", ["min:js", "min:css"]);
+gulp.task("min", gulp.parallel("min:js", "min:css"));
