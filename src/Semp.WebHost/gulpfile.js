@@ -1,4 +1,4 @@
-﻿/// <binding AfterBuild='copy-modules' />
+/// <binding AfterBuild='copy-modules' />
 "use strict";
 
 var gulp = require('gulp'),
@@ -23,7 +23,7 @@ var paths = {
     },
     dev: {
         modules: "../Modules/",
-        moduleBin: "/bin/" + buildConfigurationName + "/netcoreapp2.1/"
+        moduleBin: "/bin/" + buildConfigurationName + "/netcoreapp2.2/"
     }
 };
 
